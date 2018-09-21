@@ -5,14 +5,16 @@ using UnityEngine;
 public abstract class BuildingScript : ScriptableObject
 {
     [SerializeField]
-    private int health;
+    protected int health;
     [SerializeField]
-    private Sprite sprite;
+    protected Sprite sprite;
     [SerializeField]
-    private int price;
+    protected int price;
     [SerializeField]
     [TextArea]
-    private string description;
+    protected string description;
+    [SerializeField]
+    private BuildingScript[] requiments;
 
 
     // Use this for initialization
