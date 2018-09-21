@@ -53,21 +53,24 @@ public class GameManagerScript : MonoBehaviour
         currentRoad = rand.Next(0, roads.Count);
 
         int enemyType = Random.Range(0, Enemies.Length);
-        Debug.Log(enemyType);
+        float randomOffset = Random.Range(-1f, 1f);
 
-        Vector3 enemyPosition = new Vector3(EnemySpawnPoint.position.x - 1f, EnemySpawnPoint.position.y - 0.5f, 0);
+        Vector3 enemyPosition = new Vector3(EnemySpawnPoint.position.x + randomOffset, EnemySpawnPoint.position.y - 0.5f, 0);
         var enemy = Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity) as GameObject;
-        enemy.GetComponent<EnemyScript>().SetRoad(roads[currentRoad]);
+        enemy.GetComponent<EnemyScript>().SetRoadAndOffset(roads[currentRoad], randomOffset);
 
-        enemyPosition = new Vector3(EnemySpawnPoint.position.x, EnemySpawnPoint.position.y - 0.5f, 0);
+        /*
+        randomOffset = Random.Range(-1f, 1f);
+        enemyPosition = new Vector3(EnemySpawnPoint.position.x + randomOffset, EnemySpawnPoint.position.y - 0.5f, 0);
         enemy = Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity);
-        enemy.GetComponent<EnemyScript>().SetRoad(roads[currentRoad]);
+        enemy.GetComponent<EnemyScript>().SetRoadAndOffset(roads[currentRoad], randomOffset);
 
-        enemyPosition = new Vector3(EnemySpawnPoint.position.x + 1f, EnemySpawnPoint.position.y - 0.5f, 0);
+        randomOffset = Random.Range(-1f, 1f);
+        enemyPosition = new Vector3(EnemySpawnPoint.position.x + randomOffset, EnemySpawnPoint.position.y - 0.5f, 0);
         enemy = Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity);
-        enemy.GetComponent<EnemyScript>().SetRoad(roads[currentRoad]);
-
-        yield return new WaitForSecondsRealtime(2f);
+        enemy.GetComponent<EnemyScript>().SetRoadAndOffset(roads[currentRoad], randomOffset);
+        */
+        yield return new WaitForSecondsRealtime(0.3f);
 
         yield return StartCoroutine(NextWave());
     }

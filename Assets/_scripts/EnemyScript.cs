@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour {
 
-    private float verticalDirection = 1f;
-    private float horizontalDirection = 0;
-
     public float MovementSpeed;
     public float Damage;
 
@@ -15,6 +12,7 @@ public class EnemyScript : MonoBehaviour {
 
     private int waypointIterator = 0;
     private int roadNumber;
+    private float offset;
 
     private bool stop = false;
 
@@ -39,11 +37,11 @@ public class EnemyScript : MonoBehaviour {
         if (stop)
             return;
         
-        Vector3 directionVector = new Vector3(road.WayPoints[waypointIterator].position.x - transform.position.x, road.WayPoints[waypointIterator].position.y - transform.position.y, transform.position.z);
+        Vector3 directionVector = new Vector3(road.WayPoints[waypointIterator].position.x - transform.position.x + offset, road.WayPoints[waypointIterator].position.y - transform.position.y, transform.position.z);
 
         transform.Translate(directionVector.normalized * MovementSpeed * Time.deltaTime);
 
-        if(Vector3.Distance(transform.position, road.WayPoints[waypointIterator].position) <= 0.1f)
+        if(Mathf.Abs(transform.position.y - road.WayPoints[waypointIterator].position.y) <= 0.1f)
         {
             if(waypointIterator < road.WayPoints.Length - 1)
             {
@@ -57,9 +55,10 @@ public class EnemyScript : MonoBehaviour {
         
 	}
 
-    public void SetRoad( Road r )
+    public void SetRoadAndOffset( Road r, float o )
     {
         road = r;
+        offset = o;
     }
 
 }
