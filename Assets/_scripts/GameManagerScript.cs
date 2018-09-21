@@ -14,6 +14,8 @@ public class GameManagerScript : MonoBehaviour
 
     private System.Random rand = new System.Random();
 
+    public List<Transform> enemyList = new List<Transform>();
+
     public List<Road> roads = new List<Road>();
     private int currentRoad;
     public Road CurrentRoad
@@ -58,6 +60,7 @@ public class GameManagerScript : MonoBehaviour
         Vector3 enemyPosition = new Vector3(EnemySpawnPoint.position.x + randomOffset, EnemySpawnPoint.position.y - 0.5f, 0);
         var enemy = Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity) as GameObject;
         enemy.GetComponent<EnemyScript>().SetRoadAndOffset(roads[currentRoad], randomOffset);
+        enemyList.Add(enemy.transform);
 
         /*
         randomOffset = Random.Range(-1f, 1f);

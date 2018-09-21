@@ -7,6 +7,7 @@ public class EnemyScript : MonoBehaviour {
 
     public float MovementSpeed;
     public float Damage;
+    public float Health;
 
     private Road road;
 
@@ -59,6 +60,12 @@ public class EnemyScript : MonoBehaviour {
     {
         road = r;
         offset = o;
+    }
+
+    public void InflictDamage()
+    {
+        //taking health
+        GetComponent<SpriteRenderer>().color = new Color(1f - GetComponent<SpriteRenderer>().color.r, 0, 0);
     }
 
 }
