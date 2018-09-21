@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Building", order = 1)]
-
-public class BuildingScript : ScriptableObject
+public abstract class BuildingScript : ScriptableObject
 {
     [SerializeField]
     private int health;
@@ -39,8 +37,5 @@ public class BuildingScript : ScriptableObject
 
     }
 
-    void Used()
-    {
-
-    }
+    protected abstract void OnUse();
 }
