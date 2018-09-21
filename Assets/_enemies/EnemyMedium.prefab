@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 2
+  Damage: 4
   Type: 1
 --- !u!212 &212106012257618514
 SpriteRenderer:

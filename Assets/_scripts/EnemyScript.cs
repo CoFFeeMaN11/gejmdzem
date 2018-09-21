@@ -11,7 +11,10 @@ public class EnemyScript : MonoBehaviour {
     public float MovementSpeed;
     public float Damage;
 
+    private Road road;
+
     private int waypointIterator = 0;
+    private int roadNumber;
 
     private bool stop = false;
 
@@ -27,7 +30,7 @@ public class EnemyScript : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-
+        
 	}
 	
 	// Update is called once per frame
@@ -36,13 +39,13 @@ public class EnemyScript : MonoBehaviour {
         if (stop)
             return;
         
-        Vector3 directionVector = new Vector3(GameManagerScript.Get.CurrentRoad.WayPoints[waypointIterator].position.x - transform.position.x, GameManagerScript.Get.CurrentRoad.WayPoints[waypointIterator].position.y - transform.position.y, transform.position.z);
+        Vector3 directionVector = new Vector3(road.WayPoints[waypointIterator].position.x - transform.position.x, road.WayPoints[waypointIterator].position.y - transform.position.y, transform.position.z);
 
         transform.Translate(directionVector.normalized * MovementSpeed * Time.deltaTime);
 
-        if(Vector3.Distance(transform.position, GameManagerScript.Get.CurrentRoad.WayPoints[waypointIterator].position) <= 0.1f)
+        if(Vector3.Distance(transform.position, road.WayPoints[waypointIterator].position) <= 0.1f)
         {
-            if(waypointIterator < GameManagerScript.Get.CurrentRoad.WayPoints.Length - 1)
+            if(waypointIterator < road.WayPoints.Length - 1)
             {
                 waypointIterator++;
             }
@@ -53,5 +56,10 @@ public class EnemyScript : MonoBehaviour {
         }
         
 	}
+
+    public void SetRoad( Road r )
+    {
+        road = r;
+    }
 
 }

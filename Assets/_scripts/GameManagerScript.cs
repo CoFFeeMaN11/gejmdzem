@@ -56,13 +56,18 @@ public class GameManagerScript : MonoBehaviour
         Debug.Log(enemyType);
 
         Vector3 enemyPosition = new Vector3(EnemySpawnPoint.position.x - 1f, EnemySpawnPoint.position.y - 0.5f, 0);
-        Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity);
-        enemyPosition = new Vector3(EnemySpawnPoint.position.x, EnemySpawnPoint.position.y - 0.5f, 0);
-        Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity);
-        enemyPosition = new Vector3(EnemySpawnPoint.position.x + 1f, EnemySpawnPoint.position.y - 0.5f, 0);
-        Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity);
+        var enemy = Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity) as GameObject;
+        enemy.GetComponent<EnemyScript>().SetRoad(roads[currentRoad]);
 
-        yield return new WaitForSecondsRealtime(1f);
+        enemyPosition = new Vector3(EnemySpawnPoint.position.x, EnemySpawnPoint.position.y - 0.5f, 0);
+        enemy = Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity);
+        enemy.GetComponent<EnemyScript>().SetRoad(roads[currentRoad]);
+
+        enemyPosition = new Vector3(EnemySpawnPoint.position.x + 1f, EnemySpawnPoint.position.y - 0.5f, 0);
+        enemy = Instantiate(Enemies[enemyType], enemyPosition, Quaternion.identity);
+        enemy.GetComponent<EnemyScript>().SetRoad(roads[currentRoad]);
+
+        yield return new WaitForSecondsRealtime(2f);
 
         yield return StartCoroutine(NextWave());
     }
