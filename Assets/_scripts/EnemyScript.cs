@@ -2,22 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyScript : MonoBehaviour {
 
     private float verticalDirection = 1f;
     private float horizontalDirection = 0;
 
     public float MovementSpeed;
+    public float Damage;
 
-    public Transform[] WayPoints;
     private int waypointIterator = 0;
 
     private bool stop = false;
 
+    public enum EnemyType
+    {
+        small,
+        medium,
+        big
+    }
+
+    public EnemyType Type;
+
 	// Use this for initialization
 	void Start ()
     {
-		
+
 	}
 	
 	// Update is called once per frame
@@ -25,14 +35,14 @@ public class EnemyScript : MonoBehaviour {
     {
         if (stop)
             return;
-
-        Vector3 directionVector = new Vector3(WayPoints[waypointIterator].position.x - transform.position.x, WayPoints[waypointIterator].position.y - transform.position.y, transform.position.z);
+        
+        Vector3 directionVector = new Vector3(GameManagerScript.Get.CurrentRoad.WayPoints[waypointIterator].position.x - transform.position.x, GameManagerScript.Get.CurrentRoad.WayPoints[waypointIterator].position.y - transform.position.y, transform.position.z);
 
         transform.Translate(directionVector.normalized * MovementSpeed * Time.deltaTime);
 
-        if(Vector3.Distance(transform.position, WayPoints[waypointIterator].position) <= 0.1f)
+        if(Vector3.Distance(transform.position, GameManagerScript.Get.CurrentRoad.WayPoints[waypointIterator].position) <= 0.1f)
         {
-            if(waypointIterator < WayPoints.Length - 1)
+            if(waypointIterator < GameManagerScript.Get.CurrentRoad.WayPoints.Length - 1)
             {
                 waypointIterator++;
             }
@@ -41,10 +51,7 @@ public class EnemyScript : MonoBehaviour {
                 stop = true;
             }
         }
+        
 	}
 
-    void Turn( EnemyDirection direction )
-    {
-
-    }
 }
