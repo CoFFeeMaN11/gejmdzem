@@ -64,6 +64,10 @@ public class MapEditorWindow : EditorWindow {
         {
             editedMap.ResetMap();
         }
+        if (GUILayout.Button("Test"))
+        {
+            GameManagerScript.GetAllBuilding();
+        }
         GUILayout.Label("Roads", EditorStyles.boldLabel);
         if (GUILayout.Button("Add road"))
         {

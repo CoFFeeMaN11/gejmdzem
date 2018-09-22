@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 
 
@@ -17,6 +18,8 @@ public struct WaveInfo
 
 public class GameManagerScript : MonoBehaviour
 {
+    private Dictionary<int, BuildingScript> buildings = new Dictionary<int, BuildingScript>();
+
     private static GameManagerScript GameManagerObject = null;
 
     private System.Random rand = new System.Random();
@@ -78,7 +81,21 @@ public class GameManagerScript : MonoBehaviour
 
         StartCoroutine(NextWave());
     }
+    public bool RegisterBuildings(BuildingScript _building)
+    {
 
+        return true;
+    }
+    public BuildingScript GetBuilding(int id)
+    {
+        if (!buildings.ContainsKey(id))
+            return null;
+        return buildings[id];
+    }
+    public static void GetAllBuilding()
+    {
+        Debug.Log(AssetDatabase.LoadAllAssetsAtPath("Assets\\_buildings").Length);
+    }
     private EnemyType RandomEnemy(WaveInfo info)
     {
         int rand = Random.Range(1, 1000);
