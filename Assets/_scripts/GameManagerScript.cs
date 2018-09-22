@@ -92,9 +92,9 @@ public class GameManagerScript : MonoBehaviour
     }
     public bool RegisterBuildings(BuildingScript _building)
     {
-        if (buildings.ContainsKey(_building.ID))
+        if (buildings.ContainsKey(Hash(_building.name)))
             return false;
-        buildings.Add(_building.ID, _building);
+        buildings.Add(Hash(_building.name), _building);
         return true;
     }
     public IEnumerable<BuildingScript> GetAllBuildings()
@@ -102,11 +102,11 @@ public class GameManagerScript : MonoBehaviour
         foreach (var b in buildings)
             yield return b.Value;
     }
-    public BuildingScript GetBuilding(int id)
+    public BuildingScript GetBuilding(string id)
     {
-        if (!buildings.ContainsKey(id))
+        if (!buildings.ContainsKey(Hash(id)))
             return null;
-        return buildings[id];
+        return buildings[Hash(id)];
     }
     public static void GetAllBuilding()
     {
@@ -123,6 +123,21 @@ public class GameManagerScript : MonoBehaviour
             return EnemyType.medium;
         return EnemyType.big;
 
+    }
+
+    private int Hash(string s)
+    {
+        int ret = 0;
+        for(int i = 0; i < s.Length; i++)
+        {
+            ret += s[i];
+            ret += ret << 10;
+            ret ^= ret >> 6;
+        }
+        ret += ret << 3;
+        ret ^= ret >> 11;
+        ret += ret << 15;
+        return ret;
     }
 
     public IEnumerator NextWave()
