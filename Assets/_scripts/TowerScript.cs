@@ -42,7 +42,7 @@ public class TowerScript : MonoBehaviour {
             if( Vector3.Distance(enemy.position, transform.position ) <= attackRange )
             {
                 //enemy.GetComponent<EnemyScript>().InflictDamage();
-                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
+                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity ) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 attackCounter++;
 

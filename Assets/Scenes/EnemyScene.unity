@@ -167,6 +167,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114355852501353150, guid: 8988989f1624b1f40bce3b2e5b3d301f,
+        type: 2}
+      propertyPath: Arrow
+      value: 
+      objectReference: {fileID: 1375039289150058, guid: 088b3296bd1ebd7439b0261dab279073,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8988989f1624b1f40bce3b2e5b3d301f, type: 2}
   m_IsPrefabAsset: 0
@@ -250,7 +256,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1291899057
 Prefab:
@@ -346,6 +352,11 @@ Prefab:
       propertyPath: IntervalBetweenStages
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114897627323645820, guid: 88b3c68c184a94746a25f66762c01692,
+        type: 2}
+      propertyPath: StageLength
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88b3c68c184a94746a25f66762c01692, type: 2}
   m_IsPrefabAsset: 0
@@ -391,7 +402,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4954810316877308, guid: 19e53aef9bdebdb4a921d55ac3f28e74, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19e53aef9bdebdb4a921d55ac3f28e74, type: 2}
