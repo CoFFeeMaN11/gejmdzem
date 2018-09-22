@@ -18,6 +18,13 @@ public struct TileCoords
         ret.y = a.y + b.y;
         return ret;
     }
+    public static TileCoords operator *(int a, TileCoords b)
+    {
+        TileCoords ret;
+        ret.x = a* b.x;
+        ret.y = a*b.y;
+        return ret;
+    }
     public static TileCoords operator -(TileCoords a, TileCoords b)
     {
         TileCoords ret;

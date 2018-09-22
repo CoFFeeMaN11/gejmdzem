@@ -16,9 +16,15 @@ public class MapEditorWindow : EditorWindow {
     TileEditorType currentMode = TileEditorType.NONE;
     private static GUIStyle ToggleButtonStyleNormal = null;
     private static GUIStyle ToggleButtonStyleToggled = null;
+    private Sprite[] sprites = new Sprite[6];
     private bool blockingMouseInput;
     Map editedMap;
     Road editedRoad;
+    static string[] strings =
+    {
+        "Vertical", "Horizontal", "Bottom-Left",
+        "Bottom-right", "Top-left", "Top-Right"
+    };
     [MenuItem("Window/Map editor")]
     public static void ShowWindow()
     {
@@ -87,15 +93,24 @@ public class MapEditorWindow : EditorWindow {
         { 
             editedRoad.AddWaypoint(editedRoad.WayPoints[editedRoad.WayPoints.Count-1].transform.position, editedMap);
         }
+        GUILayout.Label("Road sprites", EditorStyles.boldLabel);
+        for(int i = 0; i< 6; i++)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(strings[i]);
+            sprites[i] = EditorGUILayout.ObjectField(sprites[i], typeof(Sprite), false) as Sprite;
+            GUILayout.EndHorizontal();
+        }
         if (GUILayout.Button("Bake road"))
         {
-            editedMap.BakeRoad(editedRoad);
+            editedMap.Recovery();
+            editedMap.BakeRoad(editedRoad,sprites);
+            
         }
     }
-
     private void Awake()
     {
-        editedMap = GameObject.FindObjectOfType<Map>();
+        editedMap = FindObjectOfType<Map>();
         if (editedMap != null)
             editedMap.Recovery();
     }

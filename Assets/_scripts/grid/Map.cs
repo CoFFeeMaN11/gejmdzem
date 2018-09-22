@@ -5,7 +5,15 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-
+public enum RoadDirection
+{
+    VERTICAL,
+    HORIZONTAL,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    LEFT_TOP,
+    RIGHT_TOP,
+}
 
 public class Map : MonoBehaviour {
 
@@ -65,28 +73,104 @@ public class Map : MonoBehaviour {
             t.Type = TileType.STANDARD;
     }
 
-    public void BakeRoad(Road road)
+    public void BakeRoad(Road road, Sprite[] sprites)
     {
+        GameObject spriteGroup = new GameObject("RoadGraphics");
+        spriteGroup.transform.parent = road.transform;
+        spriteGroup.transform.position = road.WayPoints[0].transform.position;
+        GameObject temp;
+        temp = new GameObject("road");
+        temp.transform.parent = spriteGroup.transform;
+        temp.AddComponent<SpriteRenderer>().sortingOrder = -1;
+        temp.transform.position = road.WayPoints[0].transform.position;
+        SerializedObject serialized = new SerializedObject(this[FromVector(road.WayPoints[0].transform.position)]);
+        SerializedProperty property = serialized.FindProperty("type");
+        property.intValue = (int)TileType.ROAD;
+        serialized.ApplyModifiedProperties();
         if (road.WayPoints == null || road.WayPoints.Count < 2) return;
-        for(int i = 1; i < road.WayPoints.Count; i++)
+        TileCoords wp1, wp2;
+        TileCoords diff;
+        for (int i = 0; i < road.WayPoints.Count; i++)
         {
-            TileCoords wp1 = FromVector(road.WayPoints[i - 1].transform.position),
-                wp2 = FromVector(road.WayPoints[i].transform.position);
-            TileCoords diff = wp2 - wp1;
+            if(i == 0)
+            {
+                wp1 = FromVector(road.WayPoints[0].transform.position);
+                wp2 = FromVector(road.WayPoints[1].transform.position);
+                diff = wp2 - wp1;
+                if (diff.x == 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                else
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
+                continue;
+            }
+            wp1 = FromVector(road.WayPoints[i - 1].transform.position);
+            wp2 = FromVector(road.WayPoints[i].transform.position);
+            diff = wp2 - wp1;
             int steps = Mathf.Abs(diff.x) > Mathf.Abs(diff.y) ? Mathf.Abs(diff.x) : Mathf.Abs(diff.y);
             Debug.Log(steps);
             TileCoords step = new TileCoords(diff.x / steps, diff.y / steps);
             Vector2 currPoint = ToVector(wp1);
             TileCoords coords = wp1;
-            for(int v=0; v <= steps; v++)
+            temp = new GameObject("road");
+            temp.transform.parent = spriteGroup.transform;
+            temp.AddComponent<SpriteRenderer>().sortingOrder = -1;
+            temp.transform.position = ToVector(wp2);
+            serialized = new SerializedObject(this[wp2]);
+            property = serialized.FindProperty("type");
+            property.intValue = (int)TileType.ROAD;
+            serialized.ApplyModifiedProperties();
+            //temp.GetComponent<SpriteRenderer>().sortingLayerID = -1;
+            if (i + 1 == road.WayPoints.Count )
             {
-                
-                SerializedObject serialized = new SerializedObject(this[coords]);
-                SerializedProperty property = serialized.FindProperty("type");
+                if (diff.x == 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                else
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
+            }
+            else if (i != 0)
+            {
+                temp.transform.position = ToVector(wp2);
+                TileCoords wp3 = FromVector(road.WayPoints[i + 1].transform.position);
+                TileCoords diff21 = wp2 - wp1, diff32 = wp3 - wp2;
+                if (diff21.y > 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.x > 0 ? RoadDirection.DOWN_RIGHT : RoadDirection.DOWN_LEFT)];
+                else if (diff21.y < 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.x > 0 ? RoadDirection.RIGHT_TOP : RoadDirection.LEFT_TOP)];
+                else if (diff21.x > 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.y > 0 ? RoadDirection.LEFT_TOP : RoadDirection.DOWN_LEFT)];
+                else if (diff21.x < 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.y < 0 ? RoadDirection.DOWN_RIGHT : RoadDirection.DOWN_LEFT)];
+
+            }
+            
+            for (int v=1; v < steps; v++)
+            {
+                serialized = new SerializedObject(this[coords + v*step]);
+                property = serialized.FindProperty("type");
                 property.intValue = (int)TileType.ROAD;
                 serialized.ApplyModifiedProperties();
-                coords = coords + step;
+                temp = new GameObject("road");
+                temp.transform.parent = spriteGroup.transform;
+                temp.AddComponent<SpriteRenderer>().sortingOrder = -1;
+                temp.transform.position = ToVector(coords + v * step);
+                
+                if (diff.x == 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                else
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
             }
+            temp = new GameObject("road");
+            temp.transform.parent = spriteGroup.transform;
+            temp.AddComponent<SpriteRenderer>().sortingOrder = -1;
+            if (i + 1 == road.WayPoints.Count)
+            {
+                temp.transform.position = ToVector(coords + steps * step);
+                if (diff.x == 0)
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                else
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
+            }
+            
         }
     }
     public void Recovery()
