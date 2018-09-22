@@ -18,11 +18,21 @@ public class TowerScript : MonoBehaviour {
     private int attackCounter = 0;
 
     public GameObject Arrow;
+    public GameObject BuildPanel;
+
+    public UpgradeType[] upgrades;
 
     // Use this for initialization
     void Start ()
     {
         shootingTimeStamp = Time.time;
+        upgrades = new UpgradeType[3];
+
+        for(int i=0; i<upgrades.Length; i++)
+        {
+            Debug.Log(i);
+            upgrades[i] = UpgradeType.empty;
+        }
 	}
 	
 	// Update is called once per frame
@@ -44,15 +54,19 @@ public class TowerScript : MonoBehaviour {
             {
                 var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
+                arrow.gameObject.GetComponent<ArrowScript>().Damage = damage;
                 attackCounter++;
 
                 if (attackCounter == 2)
                 {
-                    //shootingTimeStamp = Time.time;
-                    Debug.Log("break");
                     break;
                 }
             }
         }
+    }
+
+    void OnMouseDown()
+    {
+        BuildPanel.SetActive( !BuildPanel.activeInHierarchy );
     }
 }

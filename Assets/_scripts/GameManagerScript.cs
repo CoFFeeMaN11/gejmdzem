@@ -21,6 +21,8 @@ public struct WaveInfo
 
 public class GameManagerScript : MonoBehaviour
 {
+    public GameObject[] ToDisable;
+
     private static GameManagerScript GameManagerObject = null;
 
     private System.Random rand = new System.Random();
@@ -70,6 +72,11 @@ public class GameManagerScript : MonoBehaviour
         foreach (var s in stageList)
         {
             stages.Enqueue(s);
+        }
+
+        foreach(GameObject obj in ToDisable)
+        {
+            obj.SetActive(false);
         }
 
         StartCoroutine(NextWave());
@@ -127,7 +134,6 @@ public class GameManagerScript : MonoBehaviour
 
             stageLengthTimeStamp = Time.time;
             //StageLength += 3f;
-            Debug.Log("next");
         }
 
         yield return StartCoroutine(NextWave());

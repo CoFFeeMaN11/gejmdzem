@@ -61,14 +61,15 @@ public class EnemyScript : MonoBehaviour {
         offset = o;
     }
 
-    public void InflictDamage()
+    public void InflictDamage( float damage )
     {
-        Health -= 10f;
+        Health -= damage;
 
         if (Health <= 0f)
         {
-            gameObject.SetActive(false);
+            PlayerScript.AddResource(ResourceType.gold, 10);
             GameManagerScript.Get.enemyList.Remove(gameObject.transform);
+            gameObject.SetActive(false);
         }
     }
 
