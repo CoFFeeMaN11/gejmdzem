@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerScript : MonoBehaviour {
+public class TowerScript : BuildingScript {
 
     [SerializeField]
     private int damage;
@@ -50,5 +51,10 @@ public class TowerScript : MonoBehaviour {
                     break;
             }
         }
+    }
+
+    protected override void OnUse()
+    {
+        throw new NotImplementedException();
     }
 }

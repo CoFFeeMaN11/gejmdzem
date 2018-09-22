@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct TileCoords
+{
+    public int x, y;
+}
+
 public enum TileType
 {
     STANDARD,
@@ -79,5 +84,10 @@ public class Tile : MonoBehaviour {
     public bool Upgrade(BuildingScript _building)
     {
         return true;
+    }
+
+    public static int Distance( TileCoords a, TileCoords b )
+    {
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
     }
 }
