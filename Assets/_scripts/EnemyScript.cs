@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyType
+{
+    small,
+    medium,
+    big
+}
 
 public class EnemyScript : MonoBehaviour {
 
@@ -16,13 +22,6 @@ public class EnemyScript : MonoBehaviour {
     private float offset;
 
     private bool stop = false;
-
-    public enum EnemyType
-    {
-        small,
-        medium,
-        big
-    }
 
     public EnemyType Type;
 
