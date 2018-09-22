@@ -15,51 +15,59 @@ public class EnemyScript : MonoBehaviour {
     public float Damage;
     public float Health;
 
-    private Road road;
+    public Queue<Transform> road = new Queue<Transform>();
 
     private int waypointIterator = 0;
     private int roadNumber;
     private float offset;
-
+    public float dist;
     private bool stop = false;
 
     public EnemyType Type;
-
 	// Use this for initialization
 	void Start ()
     {
-        
-	}
+        stop = false;
+        waypointIterator = 1;
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (stop)
+        if (stop || road.Count == 0)
             return;
+
+
         
-        Vector3 directionVector = new Vector3(road.WayPoints[waypointIterator].transform.position.x - transform.position.x + offset,
-            road.WayPoints[waypointIterator].transform.position.y - transform.position.y, transform.position.z);
+        Vector3 directionVector = new Vector3(road.Peek().position.x - transform.position.x + offset,
+            road.Peek().position.y - transform.position.y);
 
         transform.Translate(directionVector.normalized * MovementSpeed * Time.deltaTime);
-
-        if(Mathf.Abs(transform.position.y - road.WayPoints[waypointIterator].transform.position.y) <= 0.1f)
+        dist = Vector2.Distance(transform.position, road.Peek().position);
+        if (dist <= 1f)
         {
-            if(waypointIterator < road.WayPoints.Count - 1)
+            if (road.Count != 0)
             {
                 waypointIterator++;
+                road.Dequeue();
             }
             else
             {
                 stop = true;
+                Destroy(gameObject);
+                return;
             }
         }
-        
-	}
+    }
 
     public void SetRoadAndOffset( Road r, float o )
     {
-        road = r;
+        foreach (var i in r.WayPoints)
+            road.Enqueue(i.transform);
         offset = o;
+        road.Dequeue();
+
     }
 
     public void InflictDamage( float damage )

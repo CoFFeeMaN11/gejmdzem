@@ -139,7 +139,7 @@ public class Map : MonoBehaviour {
                 else if (diff21.x > 0)
                     temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.y > 0 ? RoadDirection.LEFT_TOP : RoadDirection.DOWN_LEFT)];
                 else if (diff21.x < 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.y < 0 ? RoadDirection.DOWN_RIGHT : RoadDirection.DOWN_LEFT)];
+                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.y < 0 ? RoadDirection.DOWN_RIGHT : RoadDirection.RIGHT_TOP)];
 
             }
             

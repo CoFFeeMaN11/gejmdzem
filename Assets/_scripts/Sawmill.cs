@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "Sawmill", menuName = "Buildings/Sawmill", order = 1)]
 public class Sawmill : BuildingScript
 {
     public int ResourceQuantity;
@@ -28,7 +29,7 @@ public class Sawmill : BuildingScript
         }
 	}
     
-    protected override void OnUse()
+    public override void OnUse()
     {
         throw new NotImplementedException();
     }

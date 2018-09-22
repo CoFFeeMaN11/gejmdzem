@@ -32,7 +32,7 @@ public class UpgradeBuildingScript : BuildingScript
 		
 	}
 
-    protected override void OnUse()
+    public override void OnUse()
     {
         throw new NotImplementedException();
     }

@@ -72,7 +72,7 @@ class TowerScript : BuildingScript
         BuildPanel.SetActive( !BuildPanel.activeInHierarchy );
     }
 
-    protected override void OnUse()
+    public override void OnUse()
     {
         throw new NotImplementedException();
     }

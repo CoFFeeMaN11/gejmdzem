@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
-
+using System;
 
 [System.Serializable]
 public struct WaveInfo
@@ -18,7 +17,7 @@ public struct WaveInfo
 
 public class GameManagerScript : MonoBehaviour
 {
-
+    public BuildingMenu menu;
     private Dictionary<int, BuildingScript> buildings = new Dictionary<int, BuildingScript>();
 
     public GameObject[] ToDisable;
@@ -72,6 +71,8 @@ public class GameManagerScript : MonoBehaviour
             GameManagerObject = this;
         else if (GameManagerObject != this)
             Destroy(gameObject);
+        mainMap = GetComponent<Map>();
+        mainMap.Recovery();
     }
 
     void Start()
@@ -81,11 +82,6 @@ public class GameManagerScript : MonoBehaviour
         foreach (var s in stageList)
         {
             stages.Enqueue(s);
-        }
-
-        foreach(GameObject obj in ToDisable)
-        {
-            obj.SetActive(false);
         }
 
         StartCoroutine(NextWave());
@@ -114,7 +110,7 @@ public class GameManagerScript : MonoBehaviour
     }
     private EnemyType RandomEnemy(WaveInfo info)
     {
-        int rand = Random.Range(1, 1000);
+        int rand = UnityEngine.Random.Range(1, 1000);
         int mediumStart = Mathf.RoundToInt(1000 * info.WeakChance);
         int hardStart = mediumStart + Mathf.RoundToInt(1000 * info.MediumChance);
         if (rand < mediumStart)
@@ -125,7 +121,7 @@ public class GameManagerScript : MonoBehaviour
 
     }
 
-    private int Hash(string s)
+    public static int Hash(string s)
     {
         int ret = 0;
         for(int i = 0; i < s.Length; i++)
@@ -140,19 +136,25 @@ public class GameManagerScript : MonoBehaviour
         return ret;
     }
 
+    internal void OpenBuildMenu(TileCoords coords)
+    {
+        menu.gameObject.SetActive(true);
+        menu.Show(coords);
+    }
+
     public IEnumerator NextWave()
     {
         currentRoad = rand.Next(0, roads.Count);
 
         //int enemyType = Random.Range(0, Enemies.Length);
-        float randomOffset = Random.Range(-1f, 1f);
+        float randomOffset = UnityEngine.Random.Range(-1f, 1f);
 
         if(stages.Peek().finalStage != -1 && currentStage > stages.Peek().finalStage)
         {
             stages.Dequeue();
         }
 
-        Vector3 enemyPosition = new Vector3(EnemySpawnPoint.position.x + randomOffset, EnemySpawnPoint.position.y - 0.5f, 0);
+        Vector3 enemyPosition = new Vector3(roads[currentRoad].WayPoints[0].transform.position.x + randomOffset, roads[currentRoad].WayPoints[0].transform.position.y - 0.5f, -10f);
         var enemy = Instantiate(Enemies[(int)RandomEnemy(stages.Peek())], enemyPosition, Quaternion.identity) as GameObject;
         enemy.GetComponent<EnemyScript>().SetRoadAndOffset(roads[currentRoad], randomOffset);
         enemyList.Add(enemy.transform);
@@ -182,6 +184,16 @@ public class GameManagerScript : MonoBehaviour
         }
 
         yield return StartCoroutine(NextWave());
+    }
+
+    private void Update()
+    {
+        if(Input.GetButtonDown("Fire1"))
+        {
+            var tempTile = mainMap.FromVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (!MainMap.Exists(tempTile.x, tempTile.y)) return;
+            MainMap[tempTile].gameObject.SendMessage("OnUse");
+        }
     }
 
 }

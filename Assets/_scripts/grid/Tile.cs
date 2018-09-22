@@ -139,5 +139,11 @@ public class Tile : MonoBehaviour {
         return true;
     }
 
-    
+    public void OnUse()
+    {
+        if (type != TileType.BUILDING)
+            GameManagerScript.Get.OpenBuildMenu(coords);
+        else
+            building.OnUse();
+    }
 }

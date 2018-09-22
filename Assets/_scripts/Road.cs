@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 [ExecuteInEditMode]
-public class Road : MonoBehaviour {
+public class Road : MonoBehaviour
+{
 
     public List<Waypoint> WayPoints = new List<Waypoint>();
 
