@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Tower", menuName = "Buildings/Tower", order = 1)]
+public class TowerScript : MonoBehaviour {
 
     [SerializeField]
     private int damage;
@@ -14,7 +14,7 @@ using UnityEngine;
     [SerializeField]
     private float shootingTimeInterval;
     private float shootingTimeStamp;
-    
+
     private int attackCounter = 0;
 
     public GameObject Arrow;
@@ -50,9 +50,9 @@ using UnityEngine;
     {
         foreach( Transform enemy in GameManagerScript.Get.enemyList )
         {
-            if (TileCoords.Distance(GameManagerScript.Get.MainMap.FromVector(enemy.position), coords) <= attackRange)
+            if( Vector3.Distance(enemy.position, transform.position ) <= attackRange )
             {
-                var arrow = Instantiate(Arrow, GameManagerScript.Get.MainMap.ToVector(coords), Quaternion.identity) as GameObject;
+                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 arrow.gameObject.GetComponent<ArrowScript>().Damage = damage;
                 attackCounter++;

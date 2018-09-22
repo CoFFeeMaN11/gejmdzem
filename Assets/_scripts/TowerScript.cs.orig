@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+<<<<<<< HEAD
 [CreateAssetMenu(fileName = "Tower", menuName = "Buildings/Tower", order = 1)]
+public class TowerScript : BuildingScript {
+=======
+public class TowerScript : MonoBehaviour {
+>>>>>>> 286732f3e4b2a0373db72bf053be3c80cb95dd1f
 
     [SerializeField]
     private int damage;
@@ -52,7 +57,12 @@ using UnityEngine;
         {
             if (TileCoords.Distance(GameManagerScript.Get.MainMap.FromVector(enemy.position), coords) <= attackRange)
             {
+<<<<<<< HEAD
+                //enemy.GetComponent<EnemyScript>().InflictDamage();
                 var arrow = Instantiate(Arrow, GameManagerScript.Get.MainMap.ToVector(coords), Quaternion.identity) as GameObject;
+=======
+                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
+>>>>>>> 286732f3e4b2a0373db72bf053be3c80cb95dd1f
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 arrow.gameObject.GetComponent<ArrowScript>().Damage = damage;
                 attackCounter++;

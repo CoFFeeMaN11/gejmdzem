@@ -80,6 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 1
   Damage: 4
+  Health: 100
   Type: 2
 --- !u!212 &212106012257618514
 SpriteRenderer:

@@ -12,6 +12,8 @@ public class ArrowScript : MonoBehaviour {
 
     private float startTime;
 
+    public float Damage;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -25,31 +27,14 @@ public class ArrowScript : MonoBehaviour {
 
         if (Vector3.Distance(target.position, transform.position) <= 0.5f)
         {
-            //target.gameObject.GetComponent<EnemyScript>().InflictDamage();
-            target.gameObject.SetActive(false);
-            GameManagerScript.Get.enemyList.Remove(target);
+            target.gameObject.GetComponent<EnemyScript>().InflictDamage( Damage );
+            //target.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
 
         if( Vector3.Distance(directionVector, transform.position) <= 0.1f )
         {
             gameObject.SetActive(false);
-        }
-
-        return;
-        if ( Time.time - startTime >= LifeTime )
-        {
-            if (Vector3.Distance(target.position, transform.position) <= 0.3f)
-            {
-                //target.gameObject.SetActive(false);
-                GameManagerScript.Get.enemyList.Remove(target);
-                gameObject.SetActive(false);
-            }
-            else
-            {
-                Debug.Log("miss");
-                gameObject.SetActive(false);
-            }
         }
 	}
 

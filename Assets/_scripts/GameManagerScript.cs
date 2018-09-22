@@ -18,7 +18,11 @@ public struct WaveInfo
 
 public class GameManagerScript : MonoBehaviour
 {
+<<<<<<< HEAD
     private Dictionary<int, BuildingScript> buildings = new Dictionary<int, BuildingScript>();
+=======
+    public GameObject[] ToDisable;
+>>>>>>> 286732f3e4b2a0373db72bf053be3c80cb95dd1f
 
     private static GameManagerScript GameManagerObject = null;
 
@@ -77,6 +81,11 @@ public class GameManagerScript : MonoBehaviour
         foreach (var s in stageList)
         {
             stages.Enqueue(s);
+        }
+
+        foreach(GameObject obj in ToDisable)
+        {
+            obj.SetActive(false);
         }
 
         StartCoroutine(NextWave());
@@ -148,7 +157,6 @@ public class GameManagerScript : MonoBehaviour
 
             stageLengthTimeStamp = Time.time;
             //StageLength += 3f;
-            Debug.Log("next");
         }
 
         yield return StartCoroutine(NextWave());

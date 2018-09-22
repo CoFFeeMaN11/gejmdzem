@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Tower", menuName = "Buildings/Tower", order = 1)]
+public class TowerScript : BuildingScript {
 
     [SerializeField]
     private int damage;
@@ -18,21 +19,11 @@ using UnityEngine;
     private int attackCounter = 0;
 
     public GameObject Arrow;
-    public GameObject BuildPanel;
-
-    public UpgradeType[] upgrades;
 
     // Use this for initialization
     void Start ()
     {
         shootingTimeStamp = Time.time;
-        upgrades = new UpgradeType[3];
-
-        for(int i=0; i<upgrades.Length; i++)
-        {
-            Debug.Log(i);
-            upgrades[i] = UpgradeType.empty;
-        }
 	}
 	
 	// Update is called once per frame
@@ -52,21 +43,19 @@ using UnityEngine;
         {
             if (TileCoords.Distance(GameManagerScript.Get.MainMap.FromVector(enemy.position), coords) <= attackRange)
             {
+                //enemy.GetComponent<EnemyScript>().InflictDamage();
                 var arrow = Instantiate(Arrow, GameManagerScript.Get.MainMap.ToVector(coords), Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
-                arrow.gameObject.GetComponent<ArrowScript>().Damage = damage;
                 attackCounter++;
 
                 if (attackCounter == 2)
-                {
                     break;
-                }
             }
         }
     }
 
-    void OnMouseDown()
+    protected override void OnUse()
     {
-        BuildPanel.SetActive( !BuildPanel.activeInHierarchy );
+        throw new NotImplementedException();
     }
 }

@@ -62,10 +62,16 @@ public class EnemyScript : MonoBehaviour {
         offset = o;
     }
 
-    public void InflictDamage()
+    public void InflictDamage( float damage )
     {
-        //taking health
-        GetComponent<SpriteRenderer>().color = new Color(1f - GetComponent<SpriteRenderer>().color.r, 0, 0);
+        Health -= damage;
+
+        if (Health <= 0f)
+        {
+            PlayerScript.AddResource(ResourceType.gold, 10);
+            GameManagerScript.Get.enemyList.Remove(gameObject.transform);
+            gameObject.SetActive(false);
+        }
     }
 
 }
