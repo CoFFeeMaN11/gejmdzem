@@ -46,8 +46,8 @@ public class Map : MonoBehaviour {
         _in -= transform.position;
         _in.x /= tileSize;
         _in.y /= tileSize;
-        ret.x = Mathf.RoundToInt(_in.x -0.5f);
-        ret.y = Mathf.RoundToInt(_in.y -0.5f);
+        ret.x = Mathf.RoundToInt(_in.x);
+        ret.y = Mathf.RoundToInt(_in.y);
         return ret;
     }
     public Vector3 ToVector(TileCoords _in)
@@ -67,34 +67,24 @@ public class Map : MonoBehaviour {
     public void BakeRoad(Road road)
     {
         if (road.WayPoints == null || road.WayPoints.Count < 2) return;
-        TileCoords currPos;
         for(int i = 1; i < road.WayPoints.Count; i++)
         {
-            Waypoint wp1 = road.WayPoints[i - 1],
-                wp2 = road.WayPoints[i];
-            if(wp1.transform.position.x != wp2.transform.position.x)
+            TileCoords wp1 = FromVector(road.WayPoints[i - 1].transform.position),
+                wp2 = FromVector(road.WayPoints[i].transform.position);
+            TileCoords diff = wp2 - wp1;
+            int steps = Mathf.Abs(diff.x) > Mathf.Abs(diff.y) ? Mathf.Abs(diff.x) : Mathf.Abs(diff.y);
+            Debug.Log(steps);
+            TileCoords step = new TileCoords(diff.x / steps, diff.y / steps);
+            Vector2 currPoint = ToVector(wp1);
+            TileCoords coords = wp1;
+            for(int v=0; v <= steps; v++)
             {
-                currPos = FromVector(wp1.transform.position);
-                do
-                {
-                    SerializedObject serialized = new SerializedObject(this[currPos]);
-                    SerializedProperty property = serialized.FindProperty("type");
-                    property.intValue = (int)TileType.ROAD;
-                    serialized.ApplyModifiedProperties();
-                    currPos.x -= Mathf.RoundToInt(Mathf.Sign(wp2.transform.position.x - wp1.transform.position.y));
-                } while (currPos.x <= FromVector(wp2.transform.position).x);
-            }
-            else if (wp1.transform.position.y != wp2.transform.position.y)
-            {
-                currPos = FromVector(wp1.transform.position);
-                do
-                {
-                    SerializedObject serialized = new SerializedObject(this[currPos]);
-                    SerializedProperty property = serialized.FindProperty("type");
-                    property.intValue = (int)TileType.ROAD;
-                    serialized.ApplyModifiedProperties();
-                    currPos.y += (int)Mathf.Sign(wp2.transform.position.y - wp1.transform.position.y);
-                } while (currPos.y <= FromVector(wp2.transform.position).y);
+                
+                SerializedObject serialized = new SerializedObject(this[coords]);
+                SerializedProperty property = serialized.FindProperty("type");
+                property.intValue = (int)TileType.ROAD;
+                serialized.ApplyModifiedProperties();
+                coords = coords + step;
             }
         }
     }

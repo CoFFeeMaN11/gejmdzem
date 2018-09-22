@@ -17,7 +17,13 @@ public struct TileCoords
         ret.y = a.y + b.y;
         return ret;
     }
-
+    public static TileCoords operator -(TileCoords a, TileCoords b)
+    {
+        TileCoords ret;
+        ret.x = a.x - b.x;
+        ret.y = a.y - b.y;
+        return ret;
+    }
     private static TileCoords[] Neighbors =
     {
         new TileCoords(1,0), new TileCoords(1,1), new TileCoords(0,1),
