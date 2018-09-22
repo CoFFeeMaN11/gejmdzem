@@ -13,7 +13,7 @@ public class TowerScript : MonoBehaviour {
     [SerializeField]
     private float shootingTimeInterval;
     private float shootingTimeStamp;
-
+    
     private int attackCounter = 0;
 
     public GameObject Arrow;

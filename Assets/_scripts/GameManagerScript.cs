@@ -36,6 +36,11 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    public float[] StageLength;
+    public float IntervalBetweenStages;
+    private float stageLengthTimeStamp;
+    private int currentStage = 0;
+
     // Use this for initialization
     void Awake()
     {
@@ -47,6 +52,7 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
+        stageLengthTimeStamp = Time.time;
         StartCoroutine(NextWave());
     }
 
@@ -54,7 +60,7 @@ public class GameManagerScript : MonoBehaviour
     {
         currentRoad = rand.Next(0, roads.Count);
 
-        int enemyType = Random.Range(0, Enemies.Length);
+        int enemyType = Random.Range(currentStage, Enemies.Length);
         float randomOffset = Random.Range(-1f, 1f);
 
         Vector3 enemyPosition = new Vector3(EnemySpawnPoint.position.x + randomOffset, EnemySpawnPoint.position.y - 0.5f, 0);
@@ -75,7 +81,19 @@ public class GameManagerScript : MonoBehaviour
         */
         yield return new WaitForSecondsRealtime(0.3f);
 
-        yield return StartCoroutine(NextWave());
+        if( Time.time - stageLengthTimeStamp >= StageLength[currentStage] )
+        {
+            //end of stage
+            currentStage++;
+
+            yield return new WaitForSecondsRealtime(IntervalBetweenStages);
+
+            stageLengthTimeStamp = Time.time;
+            //Debug.Log("next");
+        }
+
+        if( currentStage < StageLength.Length )
+            yield return StartCoroutine(NextWave());
     }
 
 }
