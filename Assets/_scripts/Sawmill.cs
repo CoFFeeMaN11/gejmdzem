@@ -14,6 +14,7 @@ public class Sawmill : BuildingScript
 	// Use this for initialization
 	void Start ()
     {
+        GameManagerScript.Get.RegisterBuildings(this);
         resourceTimeStamp = Time.time;
 	}
 	

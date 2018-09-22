@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class BuildingScript : ScriptableObject
 {
     [SerializeField]
+    protected int id;
+    [SerializeField]
     protected int health;
     [SerializeField]
     protected Sprite sprite;
@@ -14,15 +16,18 @@ public abstract class BuildingScript : ScriptableObject
     [TextArea]
     protected string description;
     [SerializeField]
-    private BuildingScript[] requiments;
+    protected BuildingScript[] requiments;
     [SerializeField]
     protected TileCoords coords;
 
-    // Use this for initialization
-    void Start ()
+    public int ID
     {
-		
-	}
+        get
+        {
+            return id;
+        }
+    }
+
 	
 	// Update is called once per frame
 	void Update ()

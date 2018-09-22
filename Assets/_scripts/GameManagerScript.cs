@@ -92,8 +92,15 @@ public class GameManagerScript : MonoBehaviour
     }
     public bool RegisterBuildings(BuildingScript _building)
     {
-
+        if (buildings.ContainsKey(_building.ID))
+            return false;
+        buildings.Add(_building.ID, _building);
         return true;
+    }
+    public IEnumerable<BuildingScript> GetAllBuildings()
+    {
+        foreach (var b in buildings)
+            yield return b.Value;
     }
     public BuildingScript GetBuilding(int id)
     {

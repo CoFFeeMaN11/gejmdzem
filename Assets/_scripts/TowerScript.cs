@@ -26,6 +26,7 @@ class TowerScript : BuildingScript
     // Use this for initialization
     void Start ()
     {
+        GameManagerScript.Get.RegisterBuildings(this);
         shootingTimeStamp = Time.time;
         upgrades = new UpgradeType[3];
 
