@@ -154,6 +154,7 @@ MonoBehaviour:
   attackSpeed: 0
   attackRange: 3
   shootingTimeInterval: 0.5
+  Arrow: {fileID: 1130898589671596, guid: 088b3296bd1ebd7439b0261dab279073, type: 2}
 --- !u!4 &230020542
 Transform:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class TowerScript : MonoBehaviour {
 
     private int attackCounter = 0;
 
+    public GameObject Arrow;
+
     // Use this for initialization
     void Start ()
     {
@@ -39,7 +41,9 @@ public class TowerScript : MonoBehaviour {
         {
             if( Vector3.Distance(enemy.position, transform.position ) <= attackRange )
             {
-                enemy.GetComponent<EnemyScript>().InflictDamage();
+                //enemy.GetComponent<EnemyScript>().InflictDamage();
+                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
+                arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 attackCounter++;
 
                 if (attackCounter == 2)
