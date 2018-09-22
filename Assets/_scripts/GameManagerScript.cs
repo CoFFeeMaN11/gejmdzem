@@ -18,11 +18,11 @@ public struct WaveInfo
 
 public class GameManagerScript : MonoBehaviour
 {
-<<<<<<< HEAD
+
     private Dictionary<int, BuildingScript> buildings = new Dictionary<int, BuildingScript>();
-=======
+
     public GameObject[] ToDisable;
->>>>>>> 286732f3e4b2a0373db72bf053be3c80cb95dd1f
+
 
     private static GameManagerScript GameManagerObject = null;
 

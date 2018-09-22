@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Tower", menuName = "Buildings/Tower", order = 1)]
-
+class TowerScript : BuildingScript
+{ 
     [SerializeField]
     private int damage;
     [SerializeField]
@@ -68,5 +69,10 @@ using UnityEngine;
     void OnMouseDown()
     {
         BuildPanel.SetActive( !BuildPanel.activeInHierarchy );
+    }
+
+    protected override void OnUse()
+    {
+        throw new NotImplementedException();
     }
 }

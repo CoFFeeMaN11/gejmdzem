@@ -40,11 +40,8 @@ public class Map : MonoBehaviour {
     {
         return (x < xSize && y < ySize && x >= 0 && y >= 0);
     }
-<<<<<<< HEAD
+
     public TileCoords FromVector(Vector3 _in)
-=======
-    public int[] FromVector(Vector3 _in)
->>>>>>> 286732f3e4b2a0373db72bf053be3c80cb95dd1f
     {
         TileCoords ret;
         _in -= transform.position;
