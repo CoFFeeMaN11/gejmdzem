@@ -337,6 +337,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &593055163 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114925349632746906, guid: 188b60e34c9a80d479fd6c1a0b7ce1cf,
+    type: 2}
+  m_PrefabInternal: {fileID: 89516877}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &610723635
 Prefab:
   m_ObjectHideFlags: 0
@@ -414,9 +420,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WoodText: {fileID: 880096881}
+  GoldText: {fileID: 593055163}
+  StoneText: {fileID: 1060126804}
 --- !u!114 &880096881 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114487972979397792, guid: 188b60e34c9a80d479fd6c1a0b7ce1cf,
+    type: 2}
+  m_PrefabInternal: {fileID: 89516877}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1060126804 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114386537575073434, guid: 188b60e34c9a80d479fd6c1a0b7ce1cf,
     type: 2}
   m_PrefabInternal: {fileID: 89516877}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
