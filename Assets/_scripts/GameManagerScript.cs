@@ -11,7 +11,7 @@ public struct Road
 [System.Serializable]
 public struct WaveInfo
 {
-    [Range (0,1)]
+    [Range(0, 1)]
     public float WeakChance;
     [Range(0, 1)]
     public float MediumChance;
@@ -49,6 +49,10 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    public float StageLength;
+    public float IntervalBetweenStages;
+    private float stageLengthTimeStamp;
+    private int currentStage = 0;
 
     // Use this for initialization
     void Awake()
@@ -61,7 +65,9 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
-        foreach(var s in stageList)
+        stageLengthTimeStamp = Time.time;
+
+        foreach (var s in stageList)
         {
             stages.Enqueue(s);
         }
@@ -69,7 +75,7 @@ public class GameManagerScript : MonoBehaviour
         StartCoroutine(NextWave());
     }
 
-    private EnemyType RandomEnemy( WaveInfo info )
+    private EnemyType RandomEnemy(WaveInfo info)
     {
         int rand = Random.Range(1, 1000);
         int mediumStart = Mathf.RoundToInt(1000 * info.WeakChance);
@@ -79,15 +85,20 @@ public class GameManagerScript : MonoBehaviour
         if (rand < hardStart)
             return EnemyType.medium;
         return EnemyType.big;
-        
+
     }
 
     public IEnumerator NextWave()
     {
         currentRoad = rand.Next(0, roads.Count);
 
-        int enemyType = Random.Range(0, Enemies.Length);
+        //int enemyType = Random.Range(0, Enemies.Length);
         float randomOffset = Random.Range(-1f, 1f);
+
+        if(stages.Peek().finalStage != -1 && currentStage > stages.Peek().finalStage)
+        {
+            stages.Dequeue();
+        }
 
         Vector3 enemyPosition = new Vector3(EnemySpawnPoint.position.x + randomOffset, EnemySpawnPoint.position.y - 0.5f, 0);
         var enemy = Instantiate(Enemies[(int)RandomEnemy(stages.Peek())], enemyPosition, Quaternion.identity) as GameObject;
@@ -107,7 +118,20 @@ public class GameManagerScript : MonoBehaviour
         */
         yield return new WaitForSecondsRealtime(0.3f);
 
+        if (Time.time - stageLengthTimeStamp >= StageLength)
+        {
+            //end of stage
+            currentStage++;
+
+            yield return new WaitForSecondsRealtime(IntervalBetweenStages);
+
+            stageLengthTimeStamp = Time.time;
+            //StageLength += 3f;
+            Debug.Log("next");
+        }
+
         yield return StartCoroutine(NextWave());
     }
 
 }
+
