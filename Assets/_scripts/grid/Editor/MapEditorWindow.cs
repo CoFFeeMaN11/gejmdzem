@@ -5,6 +5,7 @@ using UnityEditor;
 
 public enum TileEditorType
 {
+    NONE,
     STANDARD,
     FOREST,
     ROCKS,
@@ -12,11 +13,12 @@ public enum TileEditorType
 
 public class MapEditorWindow : EditorWindow {
 
-    TileEditorType currentMode = TileEditorType.STANDARD;
+    TileEditorType currentMode = TileEditorType.NONE;
     private static GUIStyle ToggleButtonStyleNormal = null;
     private static GUIStyle ToggleButtonStyleToggled = null;
     private bool blockingMouseInput;
     Map editedMap;
+    Road editedRoad;
     [MenuItem("Window/Map editor")]
     public static void ShowWindow()
     {
@@ -33,12 +35,17 @@ public class MapEditorWindow : EditorWindow {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Map");
         editedMap = EditorGUILayout.ObjectField(editedMap, typeof(Map), true) as Map;
+        if (editedMap == null) return;
         GUILayout.EndHorizontal();
         if (ToggleButtonStyleNormal == null)
         {
             ToggleButtonStyleNormal = "Button";
             ToggleButtonStyleToggled = new GUIStyle(ToggleButtonStyleNormal);
             ToggleButtonStyleToggled.normal.background = ToggleButtonStyleToggled.active.background;
+        }
+        if (GUILayout.Button("None", currentMode == TileEditorType.NONE ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
+        {
+            currentMode = TileEditorType.NONE;
         }
         if (GUILayout.Button("Standard", currentMode == TileEditorType.STANDARD ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
         {
@@ -57,13 +64,34 @@ public class MapEditorWindow : EditorWindow {
         {
             editedMap.ResetMap();
         }
-
-
+        GUILayout.Label("Roads", EditorStyles.boldLabel);
+        if (GUILayout.Button("Add road"))
+        {
+            editedRoad = new GameObject("Road").AddComponent<Road>();
+            editedRoad.transform.position = Vector3.zero;
+            for (int i = 0; i < 3; i++)
+                editedRoad.AddWaypoint(Vector3.zero, editedMap);
+        }
+        editedRoad = EditorGUILayout.ObjectField(editedRoad, typeof(Road), true) as Road;
+        if (editedRoad != null)
+            EditRoad();
     }
-
+        
+    void EditRoad()
+    {
+        if (GUILayout.Button("Add waypoint"))
+        { 
+            editedRoad.AddWaypoint(editedRoad.WayPoints[editedRoad.WayPoints.Count-1].transform.position, editedMap);
+        }
+        if (GUILayout.Button("Bake road"))
+        {
+            editedMap.BakeRoad(editedRoad);
+        }
+    }
 
     void SceneGUI(SceneView sceneView)
     {
+        if (currentMode == TileEditorType.NONE) return;
         Event e = Event.current;
 
         if (e.type == EventType.MouseDown)
@@ -103,9 +131,9 @@ public class MapEditorWindow : EditorWindow {
         mousePos.y = Camera.current.pixelHeight - mousePos.y;
         //Debug.Log(Camera.current.ScreenPointToRay(mousePos));
         if (editedMap == null) return;
-        int [] test = editedMap.FromVector(Camera.current.ScreenPointToRay(mousePos).origin);
-        if (!editedMap.Exists(test[0], test[1])) return;
-        var tile = editedMap[test[0], test[1]];
+        TileCoords test = editedMap.FromVector(Camera.current.ScreenPointToRay(mousePos).origin);
+        if (!editedMap.Exists(test.x, test.y)) return;
+        var tile = editedMap[test.x, test.y];
         SerializedObject serializedObject = new SerializedObject(tile);
         SerializedProperty property = serializedObject.FindProperty("type");
         switch (currentMode)

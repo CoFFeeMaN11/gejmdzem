@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct Road
-{
-    public Transform[] WayPoints;
-}
+
 
 [System.Serializable]
 public struct WaveInfo
@@ -28,7 +24,8 @@ public class GameManagerScript : MonoBehaviour
     public List<Transform> enemyList = new List<Transform>();
     private Queue<WaveInfo> stages = new Queue<WaveInfo>();
     public List<WaveInfo> stageList = new List<WaveInfo>();
-
+    [SerializeField]
+    private Map mainMap;
     public List<Road> roads = new List<Road>();
     private int currentRoad;
     public Road CurrentRoad
@@ -36,6 +33,13 @@ public class GameManagerScript : MonoBehaviour
         get
         {
             return roads[currentRoad];
+        }
+    }
+    public Map MainMap
+    {
+        get
+        {
+            return mainMap;
         }
     }
     public Transform EnemySpawnPoint;

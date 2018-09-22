@@ -5,6 +5,37 @@ using UnityEngine;
 public struct TileCoords
 {
     public int x, y;
+    public TileCoords(int p1, int p2)
+    {
+        x = p1;
+        y = p2;
+    }
+    public static TileCoords operator +(TileCoords a, TileCoords b)
+    {
+        TileCoords ret;
+        ret.x = a.x + b.x;
+        ret.y = a.y + b.y;
+        return ret;
+    }
+
+    private static TileCoords[] Neighbors =
+    {
+        new TileCoords(1,0), new TileCoords(1,1), new TileCoords(0,1),
+        new TileCoords(-1,1), new TileCoords(-1,0), new TileCoords(-1,-1),
+        new TileCoords(0,-1), new TileCoords(1,-1)
+    };
+    public TileCoords GetNeighbor(int i)
+    {
+        return this + Neighbors[i % 8];
+    }
+    public override string ToString()
+    {
+        return string.Format("({0},{1})", x, y);
+    }
+    public static int Distance(TileCoords a, TileCoords b)
+    {
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
+    }
 }
 
 public enum TileType
@@ -86,8 +117,5 @@ public class Tile : MonoBehaviour {
         return true;
     }
 
-    public static int Distance( TileCoords a, TileCoords b )
-    {
-        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
-    }
+    
 }

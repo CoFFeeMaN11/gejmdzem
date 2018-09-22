@@ -15,7 +15,8 @@ public abstract class BuildingScript : ScriptableObject
     protected string description;
     [SerializeField]
     private BuildingScript[] requiments;
-
+    [SerializeField]
+    protected TileCoords coords;
 
     // Use this for initialization
     void Start ()

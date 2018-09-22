@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "Tower", menuName = "Buildings/Tower", order = 1)]
 public class TowerScript : BuildingScript {
 
     [SerializeField]
@@ -14,7 +15,7 @@ public class TowerScript : BuildingScript {
     [SerializeField]
     private float shootingTimeInterval;
     private float shootingTimeStamp;
-
+    
     private int attackCounter = 0;
 
     public GameObject Arrow;
@@ -40,10 +41,10 @@ public class TowerScript : BuildingScript {
     {
         foreach( Transform enemy in GameManagerScript.Get.enemyList )
         {
-            if( Vector3.Distance(enemy.position, transform.position ) <= attackRange )
+            if (TileCoords.Distance(GameManagerScript.Get.MainMap.FromVector(enemy.position), coords) <= attackRange)
             {
                 //enemy.GetComponent<EnemyScript>().InflictDamage();
-                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
+                var arrow = Instantiate(Arrow, GameManagerScript.Get.MainMap.ToVector(coords), Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 attackCounter++;
 

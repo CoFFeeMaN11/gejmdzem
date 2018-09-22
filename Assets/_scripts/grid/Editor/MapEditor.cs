@@ -13,18 +13,7 @@ public class MapEditor : Editor {
         if (GUILayout.Button("Create Map"))
         {
             map.CreateGrid();
-        }
-        
 
-    }
-
-    private void OnSceneGUI()
-    {
-        if (Event.current.type == EventType.MouseDown)
-        {
-            //Vector2 mousePos = Event.current.mousePosition;
-            //mousePos.y = Camera.current.pixelHeight - mousePos.y;
-            //Debug.Log(Camera.current.ScreenPointToRay(mousePos));
         }
     }
 

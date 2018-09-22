@@ -37,13 +37,14 @@ public class EnemyScript : MonoBehaviour {
         if (stop)
             return;
         
-        Vector3 directionVector = new Vector3(road.WayPoints[waypointIterator].position.x - transform.position.x + offset, road.WayPoints[waypointIterator].position.y - transform.position.y, transform.position.z);
+        Vector3 directionVector = new Vector3(road.WayPoints[waypointIterator].transform.position.x - transform.position.x + offset,
+            road.WayPoints[waypointIterator].transform.position.y - transform.position.y, transform.position.z);
 
         transform.Translate(directionVector.normalized * MovementSpeed * Time.deltaTime);
 
-        if(Mathf.Abs(transform.position.y - road.WayPoints[waypointIterator].position.y) <= 0.1f)
+        if(Mathf.Abs(transform.position.y - road.WayPoints[waypointIterator].transform.position.y) <= 0.1f)
         {
-            if(waypointIterator < road.WayPoints.Length - 1)
+            if(waypointIterator < road.WayPoints.Count - 1)
             {
                 waypointIterator++;
             }
