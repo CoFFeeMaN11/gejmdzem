@@ -63,8 +63,13 @@ public class EnemyScript : MonoBehaviour {
 
     public void InflictDamage()
     {
-        //taking health
-        GetComponent<SpriteRenderer>().color = new Color(1f - GetComponent<SpriteRenderer>().color.r, 0, 0);
+        Health -= 10f;
+
+        if (Health <= 0f)
+        {
+            gameObject.SetActive(false);
+            GameManagerScript.Get.enemyList.Remove(gameObject.transform);
+        }
     }
 
 }

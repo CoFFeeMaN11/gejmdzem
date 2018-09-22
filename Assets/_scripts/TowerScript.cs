@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerScript : BuildingScript {
+public class TowerScript : MonoBehaviour {
 
     [SerializeField]
     private int damage;
@@ -42,19 +42,17 @@ public class TowerScript : BuildingScript {
         {
             if( Vector3.Distance(enemy.position, transform.position ) <= attackRange )
             {
-                //enemy.GetComponent<EnemyScript>().InflictDamage();
                 var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 attackCounter++;
 
                 if (attackCounter == 2)
+                {
+                    //shootingTimeStamp = Time.time;
+                    Debug.Log("break");
                     break;
+                }
             }
         }
-    }
-
-    protected override void OnUse()
-    {
-        throw new NotImplementedException();
     }
 }

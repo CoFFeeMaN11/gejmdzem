@@ -31,7 +31,7 @@ public class Map : MonoBehaviour {
     {
         return (x < xSize && y < ySize && x >= 0 && y >= 0);
     }
-    public int FromVector(Vector3 _in)
+    public int[] FromVector(Vector3 _in)
     {
         int[] ret = new int[2];
         _in -= transform.position;
