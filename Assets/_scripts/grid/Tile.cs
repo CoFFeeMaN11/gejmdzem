@@ -11,11 +11,15 @@ public enum TileType
     SELECTED,
     BUILDING,
 }
+[RequireComponent(typeof(SpriteRenderer))]
 [ExecuteInEditMode]
-public class Tile : ScriptableObject {
+public class Tile : MonoBehaviour {
+    [SerializeField]
     private int x, y;
+    [SerializeField]
     private int size;
-    private TileType type;
+    [SerializeField]
+    private TileType type = TileType.STANDARD;
     private BuildingScript building;
 
     public static Color[] tileColors =
@@ -51,24 +55,26 @@ public class Tile : ScriptableObject {
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = tileColors[(int)type];
+        Gizmos.DrawCube(transform.position, new Vector3(size, size));
+    }
     public void Create(int _x, int _y, int size, TileType _type = TileType.STANDARD)
     {
         x = _x;
         y = _y;
         if (_type == TileType.BUILDING)
             _type = TileType.STANDARD;
+        //transform.localPosition = new Vector3((x) * size, (y) * size);
     }
+
     public bool Build(BuildingScript _building)
     {
         if (type == TileType.BUILDING) return false;
         type = TileType.BUILDING;
         building = _building;
         return true;
-    }
-    public void DrawInEditor(Transform mapTransform)
-    {
-        Gizmos.color = tileColors[(int)type];
-        Gizmos.DrawCube(mapTransform.position + new Vector3((x + 0.5f) * size, (y + 0.5f) * size), new Vector3(size, size));
     }
     public bool Upgrade(BuildingScript _building)
     {
