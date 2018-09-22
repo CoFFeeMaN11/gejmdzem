@@ -16,7 +16,7 @@ public class Map : MonoBehaviour {
     [SerializeField]
     private int ySize = 10;
     [SerializeField]
-    Tile [,] map;
+    Tile[,] map;
 
     public Tile this[int x, int y]
     {
@@ -88,25 +88,37 @@ public class Map : MonoBehaviour {
             }
         }
     }
+    public void Recovery()
+    {
+        map = new Tile[xSize, ySize];
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var temp = transform.GetChild(i).GetComponent<Tile>();
+            map[temp.Coords.x, temp.Coords.y] = temp;
+        }
 
+
+    }
     public void CreateGrid()
     {
-        for (int i = 0; i < transform.childCount; i++)
-            if(transform.GetChild(i) != null)
-                DestroyImmediate(transform.GetChild(i).gameObject);
-        map = new Tile[xSize, ySize];
+        if(map != null)
+            foreach (var t in map)
+                if (t != null)
+                    DestroyImmediate(t.gameObject);
+        map = new Tile[xSize, ySize];  
         int index = 0;
         for (int i = 0; i < xSize; i++)
+        {
             for (int j = 0; j < ySize; j++)
             {
-                var temp = new GameObject(string.Format("Tile{0:0000}",index++)).AddComponent<Tile>();
+                var temp = new GameObject(string.Format("Tile{0:0000}", index++)).AddComponent<Tile>();
                 temp.transform.parent = transform;
                 temp.Create(i, j, tileSize);
-                temp.gameObject.transform.position = transform.position + new Vector3((i+.5f)*tileSize, (j+.5f) * tileSize);
+                temp.gameObject.transform.position = transform.position + new Vector3((i + .5f) * tileSize, (j + .5f) * tileSize);
 #if UNITY_EDITOR
                 SerializedObject serializedObject = new SerializedObject(temp);
-                SerializedProperty xProp = serializedObject.FindProperty("x"),
-                    yProp = serializedObject.FindProperty("y"),
+                SerializedProperty xProp = serializedObject.FindProperty("coords.x"),
+                    yProp = serializedObject.FindProperty("coords.y"),
                     sizeProp = serializedObject.FindProperty("size");
                 xProp.intValue = i;
                 yProp.intValue = j;
@@ -115,6 +127,7 @@ public class Map : MonoBehaviour {
 #endif
                 map[i,j] = temp;
             }
+        }
         Debug.Log("Create grid");
     }
 

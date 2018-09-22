@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public struct TileCoords
 {
     public int x, y;
@@ -57,7 +58,7 @@ public enum TileType
 [ExecuteInEditMode]
 public class Tile : MonoBehaviour {
     [SerializeField]
-    private int x, y;
+    private TileCoords coords;
     [SerializeField]
     private int size;
     [SerializeField]
@@ -97,6 +98,14 @@ public class Tile : MonoBehaviour {
         }
     }
 
+    public TileCoords Coords
+    {
+        get
+        {
+            return coords;
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = tileColors[(int)type];
@@ -104,8 +113,8 @@ public class Tile : MonoBehaviour {
     }
     public void Create(int _x, int _y, int size, TileType _type = TileType.STANDARD)
     {
-        x = _x;
-        y = _y;
+        coords.x = _x;
+        coords.y = _y;
         if (_type == TileType.BUILDING)
             _type = TileType.STANDARD;
         //transform.localPosition = new Vector3((x) * size, (y) * size);

@@ -15,6 +15,16 @@ public class MapEditor : Editor {
             map.CreateGrid();
 
         }
+        if (GUILayout.Button("Reload"))
+        {
+            map.Recovery();
+
+        }
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("OnEnable");
     }
 
 }

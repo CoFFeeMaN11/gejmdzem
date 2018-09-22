@@ -89,6 +89,13 @@ public class MapEditorWindow : EditorWindow {
         }
     }
 
+    private void Awake()
+    {
+        editedMap = GameObject.FindObjectOfType<Map>();
+        if (editedMap != null)
+            editedMap.Recovery();
+    }
+
     void SceneGUI(SceneView sceneView)
     {
         if (currentMode == TileEditorType.NONE) return;
