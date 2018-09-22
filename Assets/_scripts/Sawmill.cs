@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Sawmill : MonoBehaviour
 {
-
     public int ResourceQuantity;
     public float TimeInterval;
     private float resourceTimeStamp;
@@ -15,8 +14,8 @@ public class Sawmill : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update ()
+    {	
         if( Time.time - resourceTimeStamp >= TimeInterval )
         {
             resourceTimeStamp = Time.time;
