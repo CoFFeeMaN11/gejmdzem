@@ -36,6 +36,7 @@ public struct Path
 
 public class GameManagerScript : MonoBehaviour
 {
+    //public AudioClip ostClip;
     public GameObject UpgradePanel;
 
     public Buildings buildings;

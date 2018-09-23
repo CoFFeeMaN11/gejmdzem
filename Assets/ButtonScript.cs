@@ -18,6 +18,8 @@ public class ButtonScript : MonoBehaviour
 {
     private Button button;
 
+    private AudioSource audioSrc;
+
     public bool UpgradeButton;
 
     public ThingToBuild ToBuild;
@@ -26,6 +28,7 @@ public class ButtonScript : MonoBehaviour
 
     // Use this for initialization
     void Start () {
+        audioSrc = GameObject.Find("Canvas").GetComponent<AudioSource>();
         button = GetComponent<Button>();
         if(button != null)
         {
@@ -66,6 +69,7 @@ public class ButtonScript : MonoBehaviour
         if(CanYouAffordIt(building))
         {
             PosStamp.obj.GetComponent<TileScript>().Disable();
+            audioSrc.Play();
             Instantiate(building, PosStamp.pos + PosStamp.offset, Quaternion.identity, GameObject.Find("Tilemap").transform);
             PlayerScript.AddResource(ResourceType.gold, -building.GetComponent<BuildingScript>().Price[0]);
             PlayerScript.AddResource(ResourceType.wood, -building.GetComponent<BuildingScript>().Price[1]);
@@ -117,19 +121,18 @@ public class ButtonScript : MonoBehaviour
 
     public IEnumerator WaitForClick( GameObject building )
     {
-        Debug.Log("corotine");
         GameManagerScript.ScreenFree = false;
         yield return new WaitForSecondsRealtime(0.1f);
         while (true)
         {
-            Debug.Log("checking mouse");
             if (Input.GetMouseButton(0) )
             {
-                Debug.Log("okokokokokkokokokokokokokok");
+                
                 Debug.Log(Vector3.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), PosStamp.obj.transform.position));
                 if (Vector3.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), PosStamp.obj.transform.position) < 15.0f)
                 {
                     Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    audioSrc.Play();
                     Instantiate(building, new Vector3(pos.x, pos.y, 0), Quaternion.identity, GameObject.Find("Tilemap").transform);
                     PlayerScript.AddResource(ResourceType.gold, -building.GetComponent<BuildingScript>().Price[0]);
                     PlayerScript.AddResource(ResourceType.wood, -building.GetComponent<BuildingScript>().Price[1]);

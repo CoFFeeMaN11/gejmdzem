@@ -18,6 +18,7 @@ class TowerScript : MonoBehaviour
     private int attackCounter = 0;
 
     public GameObject Arrow;
+    public GameObject FireArrow;
     //public GameObject BuildPanel;
 
     public List<UpgradeType> upgrades = new List<UpgradeType>();
@@ -28,11 +29,18 @@ class TowerScript : MonoBehaviour
     private float goldInterval = 2f;
     private float goldTimeStamp;
 
+    private bool explosive = false;
+
+    private GameObject arrowObj;
+
+    public Sprite CannonTowerSprite;
+
     // Use this for initialization
     void Start ()
     {
         shootingTimeStamp = Time.time;
         goldTimeStamp = Time.time;
+        arrowObj = Arrow;
 	}
 	
 	// Update is called once per frame
@@ -50,6 +58,7 @@ class TowerScript : MonoBehaviour
             Debug.Log(upgrades[listCount]);
             DealTheDeal(upgrades[listCount]);
             listCount++;
+            CheckUpgrades();
         }
 
         if(giveGold && (Time.time - goldTimeStamp >= goldInterval))
@@ -59,12 +68,39 @@ class TowerScript : MonoBehaviour
         }
 	}
 
+    void CheckUpgrades()
+    {
+        //cannon tower check
+        int workspace = 0, explosiveArrows = 0;
+
+        foreach( UpgradeType ups in upgrades )
+        {
+            if( ups == UpgradeType.Damage )
+            {
+                workspace++;
+            }
+            else if( ups == UpgradeType.ExplosiveArrows )
+            {
+                explosiveArrows++;
+            }
+        }
+
+        if (workspace == 1 && explosiveArrows == 1)
+        {
+            GetComponent<SpriteRenderer>().sprite = CannonTowerSprite;
+        }
+
+
+    }
+
     void DealTheDeal( UpgradeType type )
     {
         switch(type)
         {
             case UpgradeType.ExplosiveArrows:
-                //explosieve arrows
+                //Debug.Log("toggling faja");
+                arrowObj = FireArrow;
+                explosive = true;
                 break;
 
             case UpgradeType.AttackSpeed:
@@ -92,12 +128,13 @@ class TowerScript : MonoBehaviour
 
             if (Vector3.Distance(enemy.position, transform.position) <= attackRange)
             {
-                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
+                var arrow = Instantiate(arrowObj, transform.position, Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 arrow.gameObject.GetComponent<ArrowScript>().Damage = damage;
+                arrow.GetComponent<ArrowScript>().explodingArrow = explosive;
                 attackCounter++;
 
-                if (attackCounter == 2 + attackSpeedVaryfier)
+                if (attackCounter == 1 + attackSpeedVaryfier)
                 {
                     break;
                 }

@@ -17,7 +17,7 @@ public class PlayerScript : MonoBehaviour
     public static int Gold = 3000;
     public static int Wood = 3000;
     public static int Stone = 3000;
-    public static int Life = 1000;
+    public static int Life = 500;
 
     public Text WoodText;
     public Text GoldText;

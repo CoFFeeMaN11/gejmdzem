@@ -18,7 +18,7 @@ public class EnemyScript : MonoBehaviour {
     private SpriteRenderer ren;
 
     public float MovementSpeed;
-    public float Damage;
+    public int Damage;
     public float Health;
 
     public Queue<Transform> road = new Queue<Transform>();
@@ -33,9 +33,14 @@ public class EnemyScript : MonoBehaviour {
     private float dissapearTimeStamp;
 
     public EnemyType Type;
+
+    private float explosiveRadius = 3f;
+
+    public AudioSource audioSrc;
 	// Use this for initialization
 	void Start ()
     {
+        audioSrc = GetComponent<AudioSource>();
         stop = false;
         ren = GetComponent<SpriteRenderer>();
         defaultSprite = ren.sprite;
@@ -51,7 +56,8 @@ public class EnemyScript : MonoBehaviour {
             //attacking animation
             if( Time.time - dissapearTimeStamp >= dissapearTime )
             {
-                PlayerScript.AddResource(ResourceType.life, -1);
+                audioSrc.Play();
+                PlayerScript.AddResource(ResourceType.life, -Damage);
                 Destroy(gameObject);
             }
 
@@ -64,14 +70,27 @@ public class EnemyScript : MonoBehaviour {
 
         transform.Translate(directionVector.normalized * MovementSpeed * Time.deltaTime);
 
-        if( directionVector.x > 0.1f )
+        if( Mathf.Abs(directionVector.x) - Mathf.Abs(directionVector.y) >= 0 )
         {
-            ren.sprite = spriteSide;
-        }
-        else if(directionVector.x < -.1f)
-        {
-            ren.sprite = defaultSprite;
-            transform.localScale = new Vector3(transform.localScale.x * -1f, transform.localScale.y, transform.localScale.z);
+            if(directionVector.x > 0)
+            {
+                ren.sprite = spriteSide;
+
+                if(transform.localScale.x < 0)
+                {
+                    transform.localScale = new Vector3(transform.localScale.x * -1f, transform.localScale.y, transform.localScale.z);
+                }
+
+            }
+            else
+            {
+                ren.sprite = spriteSide;
+
+                if( transform.localScale.x > 0 )
+                {
+                    transform.localScale = new Vector3(transform.localScale.x * -1f, transform.localScale.y, transform.localScale.z);
+                }
+            }
         }
         else
         {
@@ -109,8 +128,31 @@ public class EnemyScript : MonoBehaviour {
         if (Health <= 0f)
         {
             PlayerScript.AddResource(ResourceType.gold, 10);
-            GameManagerScript.Get.enemyList.Remove(gameObject.transform);
-            gameObject.SetActive(false);
+            //GameManagerScript.Get.enemyList.Remove(gameObject.transform);
+            Destroy(gameObject);
+        }
+    }
+
+    public void InflictDamageWithExplosive(float damage)
+    {
+        Health -= damage;
+
+        foreach(Transform enemies in GameManagerScript.Get.enemyList)
+        {
+            if (enemies == null && enemies != this.transform)
+                continue;
+
+            if( Vector3.Distance(transform.position, enemies.transform.position) <= explosiveRadius )
+            {
+                enemies.gameObject.GetComponent<EnemyScript>().InflictDamage(damage);
+            }
+        }
+
+        if (Health <= 0f)
+        {
+            PlayerScript.AddResource(ResourceType.gold, 10);
+            //GameManagerScript.Get.enemyList.Remove(gameObject.transform);
+            Destroy(gameObject);
         }
     }
 

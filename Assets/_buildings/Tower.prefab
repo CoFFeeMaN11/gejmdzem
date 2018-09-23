@@ -84,7 +84,9 @@ MonoBehaviour:
   attackRange: 3.5
   shootingTimeInterval: 0.4
   Arrow: {fileID: 1130898589671596, guid: 088b3296bd1ebd7439b0261dab279073, type: 2}
+  FireArrow: {fileID: 1130898589671596, guid: fa1baed70dbc4f44a9707753de368840, type: 2}
   upgrades: 
+  CannonTowerSprite: {fileID: 21300000, guid: de3195d5ef86d574f91e3d9f8b3c5560, type: 3}
 --- !u!114 &114935455038543508
 MonoBehaviour:
   m_ObjectHideFlags: 1

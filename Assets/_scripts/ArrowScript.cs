@@ -14,27 +14,54 @@ public class ArrowScript : MonoBehaviour {
 
     public float Damage;
 
+    public AudioSource audioSrc;
+
+    [HideInInspector]
+    public bool explodingArrow = false;
+
 	// Use this for initialization
 	void Start ()
     {
-        startTime = Time.time;	
-	}
+        startTime = Time.time;
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        transform.Translate((directionVector - transform.position).normalized * MoveSpeed * Time.deltaTime);
-
-        if ( target != null && Vector3.Distance(target.position, transform.position) <= 0.5f)
+        if( !explodingArrow )
         {
-            target.gameObject.GetComponent<EnemyScript>().InflictDamage( Damage );
-            //target.gameObject.SetActive(false);
-            gameObject.SetActive(false);
+            transform.Translate((directionVector - transform.position).normalized * MoveSpeed * Time.deltaTime);
+
+            if (target != null && Vector3.Distance(target.position, transform.position) <= 0.5f)
+            {
+                target.gameObject.GetComponent<EnemyScript>().InflictDamage(Damage);
+                audioSrc.Play();
+                //target.gameObject.SetActive(false);
+                gameObject.SetActive(false);
+            }
+
+            if (Vector3.Distance(directionVector, transform.position) <= 0.1f)
+            {
+                gameObject.SetActive(false);
+            }
         }
-
-        if( Vector3.Distance(directionVector, transform.position) <= 0.1f )
+        else
         {
-            gameObject.SetActive(false);
+            transform.Translate((directionVector - transform.position).normalized * MoveSpeed * Time.deltaTime);
+
+            if (target != null && Vector3.Distance(target.position, transform.position) <= 0.5f)
+            {
+                target.gameObject.GetComponent<EnemyScript>().InflictDamageWithExplosive(3*Damage);
+                audioSrc.Play();
+                Debug.Log("lubudubudsookdokso");
+                //target.gameObject.SetActive(false);
+                gameObject.SetActive(false);
+            }
+
+            if (Vector3.Distance(directionVector, transform.position) <= 0.1f)
+            {
+                gameObject.SetActive(false);
+            }
         }
 	}
 
