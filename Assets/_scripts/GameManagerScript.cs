@@ -164,6 +164,11 @@ public class GameManagerScript : MonoBehaviour
         yield return StartCoroutine(NextWave());
     }
 
+    internal void OpenBuildMenu(TileCoords coords)
+    {
+        throw new NotImplementedException();
+    }
+
     public void ClearScreen()
     {
         foreach (GameObject obj in ToDisable)
