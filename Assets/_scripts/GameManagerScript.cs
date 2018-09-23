@@ -36,14 +36,14 @@ public struct Path
 
 public class GameManagerScript : MonoBehaviour
 {
-<<<<<<< HEAD
+
     public GameObject UpgradePanel;
 
     public Buildings buildings;
-=======
+
     public BuildingMenu menu;
     public GameObject[] ToDisable;
->>>>>>> A1ml0ck
+
 
     public Path[] paths;
 

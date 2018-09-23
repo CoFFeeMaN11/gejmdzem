@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-<<<<<<< HEAD
+
 class TowerScript : MonoBehaviour
 {
-=======
+
 
 public class TowerScript : MonoBehaviour
 {
     TileCoords coords;
->>>>>>> A1ml0ck
+
     [SerializeField]
     private int damage;
     [SerializeField]
@@ -27,7 +27,7 @@ public class TowerScript : MonoBehaviour
     public GameObject Arrow;
     //public GameObject BuildPanel;
 
-<<<<<<< HEAD
+
     public List<UpgradeType> upgrades = new List<UpgradeType>();
     private int listCount = 0;
 
@@ -35,14 +35,14 @@ public class TowerScript : MonoBehaviour
     private bool giveGold = false;
     private float goldInterval = 2f;
     private float goldTimeStamp;
-=======
+
     public float AttackSpeed
     {
         get
         {
             return attackSpeed;
         }
->>>>>>> A1ml0ck
+
 
         set
         {
@@ -53,10 +53,9 @@ public class TowerScript : MonoBehaviour
 
     public int Damage
     {
-<<<<<<< HEAD
+
         shootingTimeStamp = Time.time;
         goldTimeStamp = Time.time;
-=======
         get
         {
             return damage;
@@ -85,7 +84,6 @@ public class TowerScript : MonoBehaviour
     void Start ()
     {
         shootingTimeStamp = Time.time;
->>>>>>> A1ml0ck
 	}
 	
 	// Update is called once per frame
@@ -158,7 +156,7 @@ public class TowerScript : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
+
     void OnMouseDown()
     {
         if(GameManagerScript.ScreenFree)
@@ -167,6 +165,4 @@ public class TowerScript : MonoBehaviour
             PosStamp.obj = gameObject;
         }
     }
-=======
->>>>>>> A1ml0ck
 }
