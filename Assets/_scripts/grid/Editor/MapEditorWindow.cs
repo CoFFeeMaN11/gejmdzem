@@ -20,6 +20,7 @@ public class MapEditorWindow : EditorWindow {
     private bool blockingMouseInput;
     Map editedMap;
     Road editedRoad;
+    RoadSpritePack pack;
     static string[] strings =
     {
         "Vertical", "Horizontal", "Bottom-Left",
@@ -94,17 +95,11 @@ public class MapEditorWindow : EditorWindow {
             editedRoad.AddWaypoint(editedRoad.WayPoints[editedRoad.WayPoints.Count-1].transform.position, editedMap);
         }
         GUILayout.Label("Road sprites", EditorStyles.boldLabel);
-        for(int i = 0; i< 6; i++)
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(strings[i]);
-            sprites[i] = EditorGUILayout.ObjectField(sprites[i], typeof(Sprite), false) as Sprite;
-            GUILayout.EndHorizontal();
-        }
+        pack = EditorGUILayout.ObjectField(pack, typeof(RoadSpritePack), false) as RoadSpritePack;
         if (GUILayout.Button("Bake road"))
         {
             editedMap.Recovery();
-            editedMap.BakeRoad(editedRoad,sprites);
+            editedMap.BakeRoad(editedRoad,pack);
             
         }
     }
