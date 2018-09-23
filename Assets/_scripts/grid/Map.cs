@@ -5,15 +5,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public enum RoadDirection
-{
-    VERTICAL,
-    HORIZONTAL,
-    DOWN_LEFT,
-    DOWN_RIGHT,
-    LEFT_TOP,
-    RIGHT_TOP,
-}
 
 public class Map : MonoBehaviour {
 
@@ -73,7 +64,7 @@ public class Map : MonoBehaviour {
             t.Type = TileType.STANDARD;
     }
 
-    public void BakeRoad(Road road, Sprite[] sprites)
+    public void BakeRoad(Road road, RoadSpritePack pack)
     {
         GameObject spriteGroup = new GameObject("RoadGraphics");
         spriteGroup.transform.parent = road.transform;
@@ -98,9 +89,9 @@ public class Map : MonoBehaviour {
                 wp2 = FromVector(road.WayPoints[1].transform.position);
                 diff = wp2 - wp1;
                 if (diff.x == 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.vertical;
                 else
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.horizontal;
                 continue;
             }
             wp1 = FromVector(road.WayPoints[i - 1].transform.position);
@@ -123,9 +114,9 @@ public class Map : MonoBehaviour {
             if (i + 1 == road.WayPoints.Count )
             {
                 if (diff.x == 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.vertical;
                 else
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.horizontal;
             }
             else if (i != 0)
             {
@@ -133,13 +124,13 @@ public class Map : MonoBehaviour {
                 TileCoords wp3 = FromVector(road.WayPoints[i + 1].transform.position);
                 TileCoords diff21 = wp2 - wp1, diff32 = wp3 - wp2;
                 if (diff21.y > 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.x > 0 ? RoadDirection.DOWN_RIGHT : RoadDirection.DOWN_LEFT)];
+                    temp.GetComponent<SpriteRenderer>().sprite = diff32.x > 0 ? pack.DownRight : pack.DownLeft;
                 else if (diff21.y < 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.x > 0 ? RoadDirection.RIGHT_TOP : RoadDirection.LEFT_TOP)];
+                    temp.GetComponent<SpriteRenderer>().sprite = diff32.x > 0 ? pack.UpRight : pack.UpLeft;
                 else if (diff21.x > 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.y > 0 ? RoadDirection.LEFT_TOP : RoadDirection.DOWN_LEFT)];
+                    temp.GetComponent<SpriteRenderer>().sprite = diff32.y > 0 ? pack.UpLeft : pack.DownLeft;
                 else if (diff21.x < 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)(diff32.y < 0 ? RoadDirection.DOWN_RIGHT : RoadDirection.RIGHT_TOP)];
+                    temp.GetComponent<SpriteRenderer>().sprite = diff32.y < 0 ? pack.DownRight : pack.UpRight;
 
             }
             
@@ -153,11 +144,11 @@ public class Map : MonoBehaviour {
                 temp.transform.parent = spriteGroup.transform;
                 temp.AddComponent<SpriteRenderer>().sortingOrder = -1;
                 temp.transform.position = ToVector(coords + v * step);
-                
+
                 if (diff.x == 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.vertical;
                 else
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.horizontal;
             }
             temp = new GameObject("road");
             temp.transform.parent = spriteGroup.transform;
@@ -166,9 +157,9 @@ public class Map : MonoBehaviour {
             {
                 temp.transform.position = ToVector(coords + steps * step);
                 if (diff.x == 0)
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.VERTICAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.vertical;
                 else
-                    temp.GetComponent<SpriteRenderer>().sprite = sprites[(int)RoadDirection.HORIZONTAL];
+                    temp.GetComponent<SpriteRenderer>().sprite = pack.horizontal;
             }
             
         }
