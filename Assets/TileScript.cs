@@ -10,17 +10,11 @@ public struct PosStamp
     public static GameObject obj;
 }
 
-public enum TileType
-{
-    tower,
-    stone,
-    wood
-}
+
 
 public class TileScript : MonoBehaviour {
 
     private Button button;
-    private bool enabled = true;
 
     public TileType type;
 
@@ -40,36 +34,6 @@ public class TileScript : MonoBehaviour {
 
 	}
 
-    void OnMouseDown()
-    {
-        if( enabled  && GameManagerScript.ScreenFree)
-        {
-            GameManagerScript.Get.ClearScreen();
-
-            switch(type)
-            {
-                case TileType.stone:
-                    QuarryPanel.SetActive(true);
-                    break;
-
-                case TileType.tower:
-                    TowerBuildPanel.SetActive(true);
-
-                    QuarryPanel.SetActive(false);
-                    break;
-
-                case TileType.wood:
-                    SawmillPanel.SetActive(true);
-
-                    QuarryPanel.SetActive(false);
-                    break;
-            }
-
-            PosStamp.pos = transform.position;
-            PosStamp.offset = Vector3.up * offset;
-            PosStamp.obj = gameObject;
-        }
-    }
 
     public void Disable()
     {

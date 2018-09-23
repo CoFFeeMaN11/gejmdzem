@@ -55,7 +55,6 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    public GameObject[] ToDisable;
 
     private static GameManagerScript GameManagerObject = null;
 
@@ -103,21 +102,14 @@ public class GameManagerScript : MonoBehaviour
             stages.Enqueue(s);
         }
 
-        foreach (GameObject obj in ToDisable)
-        {
-            obj.SetActive(false);
-        }
-
         StartCoroutine(NextWave());
     }
-<<<<<<< HEAD
 
-=======
     public static void GetAllBuilding()
     {
         Debug.Log(AssetDatabase.LoadAllAssetsAtPath("Assets\\_buildings").Length);
     }
->>>>>>> A1ml0ck
+
     private EnemyType RandomEnemy(WaveInfo info)
     {
         int rand = UnityEngine.Random.Range(1, 1000);

@@ -4,10 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-class TowerScript : MonoBehaviour
-{
-
-
 public class TowerScript : MonoBehaviour
 {
     TileCoords coords;
@@ -53,9 +49,6 @@ public class TowerScript : MonoBehaviour
 
     public int Damage
     {
-
-        shootingTimeStamp = Time.time;
-        goldTimeStamp = Time.time;
         get
         {
             return damage;
