@@ -1,35 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-[System.Flags]
-public enum TerrainType
-{
-    GRASS,
-    ROAD,
-    FOREST,
-    ROCKS,
-}
 public class EnumFlagsAttribute : PropertyAttribute
 {
     public EnumFlagsAttribute() { }
 }
 
-[CreateAssetMenu(fileName = "Tower", menuName = "Building", order = 1)]
-public abstract class Building : ScriptableObject
+[CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
+public class EnumFlagsAttributeDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect _position, UnityEditor.SerializedProperty _property, GUIContent _label)
+    {
+        // Change check is needed to prevent values being overwritten during multiple-selection
+        UnityEditor.EditorGUI.BeginChangeCheck();
+        int newValue = UnityEditor.EditorGUILayout.MaskField(_property.intValue, _property.enumNames);
+        if (UnityEditor.EditorGUI.EndChangeCheck())
+        {
+            _property.intValue = newValue;
+        }
+    }
+}
+
+[System.Flags]
+public enum TerrainType
+{
+    GRASS = (1<<0),
+    ROAD = (1<<1),
+    FOREST = (1<<2),
+    ROCKS = (1<<3),
+}
+
+[CreateAssetMenu(fileName = "Building", menuName = "Building", order = 1)]
+public class Building : ScriptableObject
 {
     [SerializeField]
-    protected int maxHP;
+    private int id;
     [SerializeField]
-    protected int health;
+    private GameObject prefab;
     [SerializeField]
-    protected Sprite sprite;
-    [SerializeField]
-    protected Building[] requiments;
-    [SerializeField]
-    protected TileCoords coords;
+    private Building[] requiments;
     [SerializeField][EnumFlags]
-    protected TerrainType canBuildOn;
+    private TerrainType canBuildOn;
+    [Header("Price")]
     [SerializeField]
     private int gold;
     [SerializeField]
@@ -58,6 +72,14 @@ public abstract class Building : ScriptableObject
         get
         {
             return stone;
+        }
+    }
+
+    protected GameObject Prefab
+    {
+        get
+        {
+            return prefab;
         }
     }
 }
