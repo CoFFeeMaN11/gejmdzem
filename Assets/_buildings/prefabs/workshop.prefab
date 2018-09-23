@@ -9,75 +9,71 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1844519274080270}
+  m_RootGameObject: {fileID: 1282874772901052}
   m_IsPrefabAsset: 1
---- !u!1 &1844519274080270
+--- !u!1 &1282874772901052
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4244912191307264}
-  - component: {fileID: 212197127811752252}
-  - component: {fileID: 114731303806704242}
-  - component: {fileID: 114859623112275664}
+  - component: {fileID: 4904141851395628}
+  - component: {fileID: 212852367106977424}
+  - component: {fileID: 114869286192374656}
+  - component: {fileID: 114898380979321684}
   m_Layer: 0
-  m_Name: Tower
+  m_Name: workshop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4244912191307264
+--- !u!4 &4904141851395628
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844519274080270}
+  m_GameObject: {fileID: 1282874772901052}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 74.93, y: 35.04, z: 0}
-  m_LocalScale: {x: 0.52807796, y: 0.52807796, z: 0.52807796}
+  m_LocalPosition: {x: 74.87163, y: 24.173561, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114731303806704242
+--- !u!114 &114869286192374656
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844519274080270}
+  m_GameObject: {fileID: 1282874772901052}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 597172f29c4c83d4fa9e6561eeabbfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
-  building: {fileID: 11400000, guid: e558ce018be7fce4083dbee648fb87b0, type: 2}
---- !u!114 &114859623112275664
+  building: {fileID: 11400000, guid: bd4228ed62d3f604e8fe7017522218f0, type: 2}
+--- !u!114 &114898380979321684
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844519274080270}
+  m_GameObject: {fileID: 1282874772901052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e168f2dac81350843a0a305a484442d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 663ebea789013f24bad13770f9f07bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  attackSpeed: 10
-  attackRange: 10
-  shootingTimeInterval: 10
-  Arrow: {fileID: 1130898589671596, guid: 088b3296bd1ebd7439b0261dab279073, type: 2}
-  BuildPanel: {fileID: 0}
---- !u!212 &212197127811752252
+  upgrades: 1
+  tower: {fileID: 0}
+--- !u!212 &212852367106977424
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844519274080270}
+  m_GameObject: {fileID: 1282874772901052}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -107,12 +103,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cbe5a850c8099654498a904864dee646, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 08c3efdd5d8fb7f4883020a51ca03cb3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.24, y: 20.48}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

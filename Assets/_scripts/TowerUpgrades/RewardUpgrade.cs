@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class RewardUpgrade : ITowerUpgrade
+public class RewardUpgrade : TowerUpgrade, ITowerUpgrade
 {
-    ITowerUpgrade prevUpgrade;
-
-    public RewardUpgrade(ITowerUpgrade prev)
+    public RewardUpgrade(ITowerUpgrade prev) : base(prev)
     {
-        prevUpgrade = prev;
     }
+
     public void Effect(TowerScript tower)
     {
         prevUpgrade.Effect(tower);

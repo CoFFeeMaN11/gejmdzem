@@ -3,25 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EnumFlagsAttribute : PropertyAttribute
-{
-    public EnumFlagsAttribute() { }
-}
 
-[CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
-public class EnumFlagsAttributeDrawer : PropertyDrawer
-{
-    public override void OnGUI(Rect _position, UnityEditor.SerializedProperty _property, GUIContent _label)
-    {
-        // Change check is needed to prevent values being overwritten during multiple-selection
-        UnityEditor.EditorGUI.BeginChangeCheck();
-        int newValue = UnityEditor.EditorGUILayout.MaskField(_property.intValue, _property.enumNames);
-        if (UnityEditor.EditorGUI.EndChangeCheck())
-        {
-            _property.intValue = newValue;
-        }
-    }
-}
+
+
 
 [System.Flags]
 public enum TerrainType
@@ -51,7 +35,7 @@ public class Building : ScriptableObject
     [SerializeField]
     private int stone;
 
-    protected int GoldPrice
+    public int GoldPrice
     {
         get
         {
@@ -59,7 +43,7 @@ public class Building : ScriptableObject
         }
     }
 
-    protected int WoodPrice
+    public int WoodPrice
     {
         get
         {
@@ -67,7 +51,7 @@ public class Building : ScriptableObject
         }
     }
 
-    protected int StonePrice
+    public int StonePrice
     {
         get
         {
@@ -75,11 +59,19 @@ public class Building : ScriptableObject
         }
     }
 
-    protected GameObject Prefab
+    public GameObject Prefab
     {
         get
         {
             return prefab;
+        }
+    }
+
+    public int Id
+    {
+        get
+        {
+            return id;
         }
     }
 }

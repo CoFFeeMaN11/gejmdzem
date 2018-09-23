@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 
 
-public class AttackSpeedUpgrade : ITowerUpgrade
+public class AttackSpeedUpgrade : TowerUpgrade, ITowerUpgrade
 {
-    ITowerUpgrade prevUpgrade;
-
-    public AttackSpeedUpgrade(ITowerUpgrade prev)
+    public AttackSpeedUpgrade(ITowerUpgrade prev) : base(prev)
     {
-        prevUpgrade = prev;
     }
+
     public void Effect(TowerScript tower)
     {
         prevUpgrade.Effect(tower);

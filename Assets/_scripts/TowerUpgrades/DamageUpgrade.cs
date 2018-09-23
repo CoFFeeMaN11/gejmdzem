@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageUpgrade :  ITowerUpgrade{
-    
-    ITowerUpgrade prevUpgrade;
-
-    public DamageUpgrade(ITowerUpgrade prev)
+public class DamageUpgrade :  TowerUpgrade, ITowerUpgrade{
+    public DamageUpgrade(ITowerUpgrade prev) : base(prev)
     {
-        prevUpgrade = prev;
     }
+
     public void Effect(TowerScript tower)
     {
         prevUpgrade.Effect(tower);
