@@ -64,7 +64,7 @@ public class GameManagerScript : MonoBehaviour
     private Queue<WaveInfo> stages = new Queue<WaveInfo>();
     public List<WaveInfo> stageList = new List<WaveInfo>();
 
-    public Transform EnemySpawnPoint;
+    //public Transform EnemySpawnPoint;
     public GameObject[] Enemies;
 
     public static GameManagerScript Get
@@ -133,9 +133,9 @@ public class GameManagerScript : MonoBehaviour
             stages.Dequeue();
         }
 
-        var enemy = Instantiate(Enemies[(int)RandomEnemy(stages.Peek())], EnemySpawnPoint.position, Quaternion.identity) as GameObject;
-        enemy.GetComponent<EnemyScript>().SetRoadAndOffset(randomPath, randomOffset);
-        enemyList.Add(enemy.transform);
+        //var enemy = Instantiate(Enemies[(int)RandomEnemy(stages.Peek())], EnemySpawnPoint.position, Quaternion.identity) as GameObject;
+        //enemy.GetComponent<EnemyScript>().SetRoadAndOffset(randomPath, randomOffset);
+        //enemyList.Add(enemy.transform);
 
         /*
         randomOffset = Random.Range(-1f, 1f);

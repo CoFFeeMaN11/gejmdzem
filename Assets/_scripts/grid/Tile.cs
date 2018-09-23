@@ -131,6 +131,7 @@ public class Tile : MonoBehaviour {
         if (type == TileType.BUILDING) return false;
         type = TileType.BUILDING;
         building = Instantiate(_building,transform);
+        audioSrc.Play();
         return true;
     }
 
