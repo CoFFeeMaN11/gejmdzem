@@ -72,6 +72,8 @@ public class Tile : MonoBehaviour {
     private TileType type = TileType.STANDARD;
     private GameObject building;
 
+    public AudioSource audioSrc;
+
     public static Color[] tileColors =
     {
         new Color32(7,255,19,124),
