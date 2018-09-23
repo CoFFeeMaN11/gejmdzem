@@ -3,23 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+<<<<<<< HEAD
 class TowerScript : MonoBehaviour
 {
+=======
+
+public class TowerScript : MonoBehaviour
+{
+    TileCoords coords;
+>>>>>>> A1ml0ck
     [SerializeField]
     private int damage;
     [SerializeField]
-    private int attackSpeed;
+    private float attackSpeed;
     [SerializeField]
     private float attackRange;
     [SerializeField]
     private float shootingTimeInterval;
     private float shootingTimeStamp;
-    
+    private float rewandRadio = 1f;
     private int attackCounter = 0;
 
     public GameObject Arrow;
     //public GameObject BuildPanel;
 
+<<<<<<< HEAD
     public List<UpgradeType> upgrades = new List<UpgradeType>();
     private int listCount = 0;
 
@@ -27,12 +35,57 @@ class TowerScript : MonoBehaviour
     private bool giveGold = false;
     private float goldInterval = 2f;
     private float goldTimeStamp;
+=======
+    public float AttackSpeed
+    {
+        get
+        {
+            return attackSpeed;
+        }
+>>>>>>> A1ml0ck
 
-    // Use this for initialization
+        set
+        {
+            if (value < 0) return;
+            attackSpeed = value;
+        }
+    }
+
+    public int Damage
+    {
+<<<<<<< HEAD
+        shootingTimeStamp = Time.time;
+        goldTimeStamp = Time.time;
+=======
+        get
+        {
+            return damage;
+        }
+
+        set
+        {
+            if (value < 0) return;
+            damage = value;
+        }
+    }
+
+    public float Rewand
+    {
+        get
+        {
+            return rewandRadio;
+        }
+
+        set
+        {
+            rewandRadio = value;
+        }
+    }
+
     void Start ()
     {
         shootingTimeStamp = Time.time;
-        goldTimeStamp = Time.time;
+>>>>>>> A1ml0ck
 	}
 	
 	// Update is called once per frame
@@ -94,7 +147,7 @@ class TowerScript : MonoBehaviour
             {
                 var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
-                arrow.gameObject.GetComponent<ArrowScript>().Damage = damage;
+                arrow.gameObject.GetComponent<ArrowScript>().Damage = Damage;
                 attackCounter++;
 
                 if (attackCounter == 2 + attackSpeedVaryfier)
@@ -105,6 +158,7 @@ class TowerScript : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
     void OnMouseDown()
     {
         if(GameManagerScript.ScreenFree)
@@ -113,4 +167,6 @@ class TowerScript : MonoBehaviour
             PosStamp.obj = gameObject;
         }
     }
+=======
+>>>>>>> A1ml0ck
 }

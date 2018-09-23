@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59701e11c7a4ea7418ca3a5f42e9fa37, type: 3}
+  m_Name: Workshop
+  m_EditorClassIdentifier: 
+  id: 2
+  prefab: {fileID: 1282874772901052, guid: ff1f8a056d2019c459f5c7c3faffe20b, type: 2}
+  requiments:
+  - {fileID: 11400000, guid: e558ce018be7fce4083dbee648fb87b0, type: 2}
+  canBuildOn: 0
+  gold: 0
+  wood: 0
+  stone: 0

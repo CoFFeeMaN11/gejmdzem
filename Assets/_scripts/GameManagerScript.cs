@@ -36,9 +36,14 @@ public struct Path
 
 public class GameManagerScript : MonoBehaviour
 {
+<<<<<<< HEAD
     public GameObject UpgradePanel;
 
     public Buildings buildings;
+=======
+    public BuildingMenu menu;
+    public GameObject[] ToDisable;
+>>>>>>> A1ml0ck
 
     public Path[] paths;
 
@@ -105,7 +110,14 @@ public class GameManagerScript : MonoBehaviour
 
         StartCoroutine(NextWave());
     }
+<<<<<<< HEAD
 
+=======
+    public static void GetAllBuilding()
+    {
+        Debug.Log(AssetDatabase.LoadAllAssetsAtPath("Assets\\_buildings").Length);
+    }
+>>>>>>> A1ml0ck
     private EnemyType RandomEnemy(WaveInfo info)
     {
         int rand = UnityEngine.Random.Range(1, 1000);

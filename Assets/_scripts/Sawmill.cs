@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> A1ml0ck
 public class Sawmill : MonoBehaviour
 {
     public int ResourceQuantity;
@@ -26,5 +30,13 @@ public class Sawmill : MonoBehaviour
             PlayerScript.AddResource(Resource, ResourceQuantity);
         }
 	}
+<<<<<<< HEAD
    
+=======
+    
+    public void OnUse()
+    {
+        throw new NotImplementedException();
+    }
+>>>>>>> A1ml0ck
 }
