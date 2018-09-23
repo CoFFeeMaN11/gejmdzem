@@ -11,6 +11,12 @@ public enum EnemyType
 
 public class EnemyScript : MonoBehaviour {
 
+    private int pathNumber;
+
+    public Sprite spriteSide;
+    private Sprite defaultSprite;
+    private SpriteRenderer ren;
+
     public float MovementSpeed;
     public float Damage;
     public float Health;
@@ -23,51 +29,77 @@ public class EnemyScript : MonoBehaviour {
     public float dist;
     private bool stop = false;
 
+    private float dissapearTime = 1f;
+    private float dissapearTimeStamp;
+
     public EnemyType Type;
 	// Use this for initialization
 	void Start ()
     {
         stop = false;
-        waypointIterator = 1;
-
+        ren = GetComponent<SpriteRenderer>();
+        defaultSprite = ren.sprite;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (stop || road.Count == 0)
+        MovementSpeed *= GameManagerScript.EnemySpeedVaryfier;
+
+        if (stop)
+        {
+            //attacking animation
+            if( Time.time - dissapearTimeStamp >= dissapearTime )
+            {
+                PlayerScript.AddResource(ResourceType.life, -1);
+                Destroy(gameObject);
+            }
+
             return;
-
-
+        }
         
-        Vector3 directionVector = new Vector3(road.Peek().position.x - transform.position.x + offset,
-            road.Peek().position.y - transform.position.y);
+        Vector3 directionVector = new Vector3( GameManagerScript.Get.currentPath[pathNumber].Waypoints[waypointIterator].transform.position.x - transform.position.x + offset,
+            GameManagerScript.Get.currentPath[pathNumber].Waypoints[waypointIterator].transform.position.y - transform.position.y, 0);
+
 
         transform.Translate(directionVector.normalized * MovementSpeed * Time.deltaTime);
-        dist = Vector2.Distance(transform.position, road.Peek().position);
+
+        if( directionVector.x > 0.1f )
+        {
+            ren.sprite = spriteSide;
+        }
+        else if(directionVector.x < -.1f)
+        {
+            ren.sprite = defaultSprite;
+            transform.localScale = new Vector3(transform.localScale.x * -1f, transform.localScale.y, transform.localScale.z);
+        }
+        else
+        {
+            ren.sprite = defaultSprite;
+        }
+        
+        dist = Vector2.Distance(transform.position, GameManagerScript.Get.currentPath[pathNumber].Waypoints[waypointIterator].transform.position);
         if (dist <= 1f)
         {
-            if (road.Count != 0)
+            if (waypointIterator < GameManagerScript.Get.currentPath[pathNumber].Waypoints.Length - 1)
             {
                 waypointIterator++;
-                road.Dequeue();
             }
             else
             {
                 stop = true;
-                Destroy(gameObject);
-                return;
+                dissapearTimeStamp = Time.time;
+                //Destroy(gameObject);
+                //return;
             }
         }
+        
     }
 
-    public void SetRoadAndOffset( Road r, float o )
+    public void SetRoadAndOffset( int path, float o )
     {
-        foreach (var i in r.WayPoints)
-            road.Enqueue(i.transform);
+        pathNumber = path;
         offset = o;
-        road.Dequeue();
-
     }
 
     public void InflictDamage( float damage )

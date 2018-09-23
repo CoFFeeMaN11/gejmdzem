@@ -7,7 +7,8 @@ public enum ResourceType
 {
     gold,
     wood,
-    stone
+    stone,
+    life
 }
 
 public class PlayerScript : MonoBehaviour
@@ -16,10 +17,12 @@ public class PlayerScript : MonoBehaviour
     public static int Gold = 3000;
     public static int Wood = 3000;
     public static int Stone = 3000;
+    public static int Life = 1000;
 
     public Text WoodText;
     public Text GoldText;
     public Text StoneText;
+    public Text LifeText;
 
     // Use this for initialization
     void Start ()
@@ -27,6 +30,7 @@ public class PlayerScript : MonoBehaviour
         WoodText.text = Wood.ToString();
         GoldText.text = Gold.ToString();
         StoneText.text = Stone.ToString();
+        LifeText.text = "Life: " + Life.ToString();
     }
 	
 	// Update is called once per frame
@@ -35,16 +39,7 @@ public class PlayerScript : MonoBehaviour
         WoodText.text = Wood.ToString();
         GoldText.text = Gold.ToString();
         StoneText.text = Stone.ToString();
-
-        if( Input.GetMouseButtonDown(0) )
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out hit, 100)) // or whatever range, if applicable
-            {
-                Debug.Log("out");
-            }
-        }
+        LifeText.text = "Life: " + Life.ToString();
     }
 
     public static void AddResource( ResourceType rt, int q )
@@ -60,6 +55,13 @@ public class PlayerScript : MonoBehaviour
         else if( rt == ResourceType.wood )
         {
             Wood += q;
+        }
+        else if( rt == ResourceType.life )
+        {
+            Life += q;
+
+            if (Life <= 0)
+                Time.timeScale = 0f;
         }
     }
 }

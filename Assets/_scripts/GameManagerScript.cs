@@ -5,6 +5,19 @@ using UnityEditor;
 using System;
 
 [System.Serializable]
+
+public struct Buildings
+{
+    public GameObject Tower;
+    public GameObject Quarry;
+    public GameObject Sawmill;
+    public GameObject Alchemist;
+    public GameObject ShootingRange;
+    public GameObject Workshop;
+    public GameObject ThievesGuild;
+}
+
+[System.Serializable]
 public struct WaveInfo
 {
     [Range(0, 1)]
@@ -15,13 +28,29 @@ public struct WaveInfo
     public int finalStage;
 }
 
+[System.Serializable]
+public struct Path
+{
+    public GameObject[] Waypoints;
+}
+
 public class GameManagerScript : MonoBehaviour
 {
-    public BuildingMenu menu;
-    private Dictionary<int, BuildingScript> buildings = new Dictionary<int, BuildingScript>();
+    public GameObject UpgradePanel;
+
+    public Buildings buildings;
+
+    public Path[] paths;
+
+    public Path[] currentPath
+    {
+        get
+        {
+            return paths;
+        }
+    }
 
     public GameObject[] ToDisable;
-
 
     private static GameManagerScript GameManagerObject = null;
 
@@ -30,24 +59,7 @@ public class GameManagerScript : MonoBehaviour
     public List<Transform> enemyList = new List<Transform>();
     private Queue<WaveInfo> stages = new Queue<WaveInfo>();
     public List<WaveInfo> stageList = new List<WaveInfo>();
-    [SerializeField]
-    private Map mainMap;
-    public List<Road> roads = new List<Road>();
-    private int currentRoad;
-    public Road CurrentRoad
-    {
-        get
-        {
-            return roads[currentRoad];
-        }
-    }
-    public Map MainMap
-    {
-        get
-        {
-            return mainMap;
-        }
-    }
+
     public Transform EnemySpawnPoint;
     public GameObject[] Enemies;
 
@@ -64,6 +76,10 @@ public class GameManagerScript : MonoBehaviour
     private float stageLengthTimeStamp;
     private int currentStage = 0;
 
+    public static float EnemySpeedVaryfier = 1f;
+
+    public static bool ScreenFree = true;
+
     // Use this for initialization
     void Awake()
     {
@@ -71,8 +87,6 @@ public class GameManagerScript : MonoBehaviour
             GameManagerObject = this;
         else if (GameManagerObject != this)
             Destroy(gameObject);
-        mainMap = GetComponent<Map>();
-        mainMap.Recovery();
     }
 
     void Start()
@@ -84,30 +98,14 @@ public class GameManagerScript : MonoBehaviour
             stages.Enqueue(s);
         }
 
+        foreach (GameObject obj in ToDisable)
+        {
+            obj.SetActive(false);
+        }
+
         StartCoroutine(NextWave());
     }
-    public bool RegisterBuildings(BuildingScript _building)
-    {
-        if (buildings.ContainsKey(Hash(_building.name)))
-            return false;
-        buildings.Add(Hash(_building.name), _building);
-        return true;
-    }
-    public IEnumerable<BuildingScript> GetAllBuildings()
-    {
-        foreach (var b in buildings)
-            yield return b.Value;
-    }
-    public BuildingScript GetBuilding(string id)
-    {
-        if (!buildings.ContainsKey(Hash(id)))
-            return null;
-        return buildings[Hash(id)];
-    }
-    public static void GetAllBuilding()
-    {
-        Debug.Log(AssetDatabase.LoadAllAssetsAtPath("Assets\\_buildings").Length);
-    }
+
     private EnemyType RandomEnemy(WaveInfo info)
     {
         int rand = UnityEngine.Random.Range(1, 1000);
@@ -118,45 +116,21 @@ public class GameManagerScript : MonoBehaviour
         if (rand < hardStart)
             return EnemyType.medium;
         return EnemyType.big;
-
-    }
-
-    public static int Hash(string s)
-    {
-        int ret = 0;
-        for(int i = 0; i < s.Length; i++)
-        {
-            ret += s[i];
-            ret += ret << 10;
-            ret ^= ret >> 6;
-        }
-        ret += ret << 3;
-        ret ^= ret >> 11;
-        ret += ret << 15;
-        return ret;
-    }
-
-    internal void OpenBuildMenu(TileCoords coords)
-    {
-        menu.gameObject.SetActive(true);
-        menu.Show(coords);
     }
 
     public IEnumerator NextWave()
     {
-        currentRoad = rand.Next(0, roads.Count);
-
         //int enemyType = Random.Range(0, Enemies.Length);
         float randomOffset = UnityEngine.Random.Range(-1f, 1f);
+        int randomPath = UnityEngine.Random.Range(0, 3);
 
         if(stages.Peek().finalStage != -1 && currentStage > stages.Peek().finalStage)
         {
             stages.Dequeue();
         }
 
-        Vector3 enemyPosition = new Vector3(roads[currentRoad].WayPoints[0].transform.position.x + randomOffset, roads[currentRoad].WayPoints[0].transform.position.y - 0.5f, -10f);
-        var enemy = Instantiate(Enemies[(int)RandomEnemy(stages.Peek())], enemyPosition, Quaternion.identity) as GameObject;
-        enemy.GetComponent<EnemyScript>().SetRoadAndOffset(roads[currentRoad], randomOffset);
+        var enemy = Instantiate(Enemies[(int)RandomEnemy(stages.Peek())], EnemySpawnPoint.position, Quaternion.identity) as GameObject;
+        enemy.GetComponent<EnemyScript>().SetRoadAndOffset(randomPath, randomOffset);
         enemyList.Add(enemy.transform);
 
         /*
@@ -186,13 +160,11 @@ public class GameManagerScript : MonoBehaviour
         yield return StartCoroutine(NextWave());
     }
 
-    private void Update()
+    public void ClearScreen()
     {
-        if(Input.GetButtonDown("Fire1"))
+        foreach (GameObject obj in ToDisable)
         {
-            var tempTile = mainMap.FromVector(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            if (!MainMap.Exists(tempTile.x, tempTile.y)) return;
-            MainMap[tempTile].gameObject.SendMessage("OnUse");
+            obj.SetActive(false);
         }
     }
 

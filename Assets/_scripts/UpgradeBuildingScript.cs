@@ -13,7 +13,7 @@ public enum UpgradeType
     ExplosiveArrows
 }
 
-public class UpgradeBuildingScript : BuildingScript
+public class UpgradeBuildingScript : MonoBehaviour
 {
 
     UpgradeType Upgrade;
@@ -32,8 +32,4 @@ public class UpgradeBuildingScript : BuildingScript
 		
 	}
 
-    public override void OnUse()
-    {
-        throw new NotImplementedException();
-    }
 }

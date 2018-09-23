@@ -25,7 +25,7 @@ public class ArrowScript : MonoBehaviour {
     {
         transform.Translate((directionVector - transform.position).normalized * MoveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(target.position, transform.position) <= 0.5f)
+        if ( target != null && Vector3.Distance(target.position, transform.position) <= 0.5f)
         {
             target.gameObject.GetComponent<EnemyScript>().InflictDamage( Damage );
             //target.gameObject.SetActive(false);

@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Tower", menuName = "Buildings/Tower", order = 1)]
-class TowerScript : BuildingScript
-{ 
+class TowerScript : MonoBehaviour
+{
     [SerializeField]
     private int damage;
     [SerializeField]
@@ -19,22 +18,21 @@ class TowerScript : BuildingScript
     private int attackCounter = 0;
 
     public GameObject Arrow;
-    public GameObject BuildPanel;
+    //public GameObject BuildPanel;
 
-    public UpgradeType[] upgrades;
+    public List<UpgradeType> upgrades = new List<UpgradeType>();
+    private int listCount = 0;
+
+    private float attackSpeedVaryfier = 0f;
+    private bool giveGold = false;
+    private float goldInterval = 2f;
+    private float goldTimeStamp;
 
     // Use this for initialization
     void Start ()
     {
-        GameManagerScript.Get.RegisterBuildings(this);
         shootingTimeStamp = Time.time;
-        upgrades = new UpgradeType[3];
-
-        for(int i=0; i<upgrades.Length; i++)
-        {
-            Debug.Log(i);
-            upgrades[i] = UpgradeType.empty;
-        }
+        goldTimeStamp = Time.time;
 	}
 	
 	// Update is called once per frame
@@ -46,20 +44,60 @@ class TowerScript : BuildingScript
             attackCounter = 0;
             CheckRange();
         }
+
+        if (upgrades.Count > listCount)
+        {
+            Debug.Log(upgrades[listCount]);
+            DealTheDeal(upgrades[listCount]);
+            listCount++;
+        }
+
+        if(giveGold && (Time.time - goldTimeStamp >= goldInterval))
+        {
+            PlayerScript.AddResource(ResourceType.gold, 5);
+            goldTimeStamp = Time.time;
+        }
 	}
+
+    void DealTheDeal( UpgradeType type )
+    {
+        switch(type)
+        {
+            case UpgradeType.ExplosiveArrows:
+                //explosieve arrows
+                break;
+
+            case UpgradeType.AttackSpeed:
+                attackSpeedVaryfier = 1f;
+                break;
+
+            case UpgradeType.Damage:
+                damage += 10;
+                break;
+
+            case UpgradeType.Gold:
+                giveGold = true;
+                break;
+        }
+    }
 
     void CheckRange()
     {
         foreach( Transform enemy in GameManagerScript.Get.enemyList )
         {
-            if (TileCoords.Distance(GameManagerScript.Get.MainMap.FromVector(enemy.position), coords) <= attackRange)
+            if(enemy == null)
             {
-                var arrow = Instantiate(Arrow, GameManagerScript.Get.MainMap.ToVector(coords), Quaternion.identity) as GameObject;
+                continue;
+            }
+
+            if (Vector3.Distance(enemy.position, transform.position) <= attackRange)
+            {
+                var arrow = Instantiate(Arrow, transform.position, Quaternion.identity) as GameObject;
                 arrow.GetComponent<ArrowScript>().SetTarget(enemy);
                 arrow.gameObject.GetComponent<ArrowScript>().Damage = damage;
                 attackCounter++;
 
-                if (attackCounter == 2)
+                if (attackCounter == 2 + attackSpeedVaryfier)
                 {
                     break;
                 }
@@ -69,11 +107,10 @@ class TowerScript : BuildingScript
 
     void OnMouseDown()
     {
-        BuildPanel.SetActive( !BuildPanel.activeInHierarchy );
-    }
-
-    public override void OnUse()
-    {
-        throw new NotImplementedException();
+        if(GameManagerScript.ScreenFree)
+        {
+            GameManagerScript.Get.UpgradePanel.SetActive(true);
+            PosStamp.obj = gameObject;
+        }
     }
 }
