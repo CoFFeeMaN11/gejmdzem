@@ -70,7 +70,7 @@ public class Tile : MonoBehaviour {
     private int size;
     [SerializeField]
     private TileType type = TileType.STANDARD;
-    private BuildingScript building;
+    private GameObject building;
 
     public static Color[] tileColors =
     {
@@ -97,7 +97,7 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    public BuildingScript Building
+    public GameObject Building
     {
         get
         {
@@ -124,18 +124,13 @@ public class Tile : MonoBehaviour {
         coords.y = _y;
         if (_type == TileType.BUILDING)
             _type = TileType.STANDARD;
-        //transform.localPosition = new Vector3((x) * size, (y) * size);
     }
 
-    public bool Build(BuildingScript _building)
+    public bool Build(GameObject _building)
     {
         if (type == TileType.BUILDING) return false;
         type = TileType.BUILDING;
-        building = _building;
-        return true;
-    }
-    public bool Upgrade(BuildingScript _building)
-    {
+        building = Instantiate(_building,transform);
         return true;
     }
 
@@ -144,6 +139,6 @@ public class Tile : MonoBehaviour {
         if (type != TileType.BUILDING)
             GameManagerScript.Get.OpenBuildMenu(coords);
         else
-            building.OnUse();
+            building.SendMessage("OnUse");
     }
 }

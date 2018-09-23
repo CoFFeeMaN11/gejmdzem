@@ -10,8 +10,13 @@ public enum TerrainType
     FOREST,
     ROCKS,
 }
+public class EnumFlagsAttribute : PropertyAttribute
+{
+    public EnumFlagsAttribute() { }
+}
 
-public abstract class BuildingScript : ScriptableObject, System.IComparable<BuildingScript>
+[CreateAssetMenu(fileName = "Tower", menuName = "Building", order = 1)]
+public abstract class Building : ScriptableObject
 {
     [SerializeField]
     protected int maxHP;
@@ -20,22 +25,19 @@ public abstract class BuildingScript : ScriptableObject, System.IComparable<Buil
     [SerializeField]
     protected Sprite sprite;
     [SerializeField]
-    private int stone;
-    [SerializeField]
-    [TextArea]
-    protected string description;
-    [SerializeField]
-    protected BuildingScript[] requiments;
+    protected Building[] requiments;
     [SerializeField]
     protected TileCoords coords;
-    [SerializeField]
+    [SerializeField][EnumFlags]
     protected TerrainType canBuildOn;
     [SerializeField]
     private int gold;
     [SerializeField]
     private int wood;
+    [SerializeField]
+    private int stone;
 
-    protected int Gold
+    protected int GoldPrice
     {
         get
         {
@@ -43,7 +45,7 @@ public abstract class BuildingScript : ScriptableObject, System.IComparable<Buil
         }
     }
 
-    protected int Wood
+    protected int WoodPrice
     {
         get
         {
@@ -51,36 +53,11 @@ public abstract class BuildingScript : ScriptableObject, System.IComparable<Buil
         }
     }
 
-    protected int Stone
+    protected int StonePrice
     {
         get
         {
             return stone;
         }
-    }
-
-
-
-    // Update is called once per frame
-    void Update ()
-    {
-		
-	}
-
-    void Repair()
-    {
-        health = maxHP;
-    }
-
-    void GetUpgrades()
-    {
-
-    }
-
-    public abstract void OnUse();
-
-    public int CompareTo(BuildingScript other)
-    {
-        return GameManagerScript.Hash(this.name) - GameManagerScript.Hash(other.name);
     }
 }

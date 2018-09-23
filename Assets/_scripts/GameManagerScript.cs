@@ -18,8 +18,6 @@ public struct WaveInfo
 public class GameManagerScript : MonoBehaviour
 {
     public BuildingMenu menu;
-    private Dictionary<int, BuildingScript> buildings = new Dictionary<int, BuildingScript>();
-
     public GameObject[] ToDisable;
 
 
@@ -85,24 +83,6 @@ public class GameManagerScript : MonoBehaviour
         }
 
         StartCoroutine(NextWave());
-    }
-    public bool RegisterBuildings(BuildingScript _building)
-    {
-        if (buildings.ContainsKey(Hash(_building.name)))
-            return false;
-        buildings.Add(Hash(_building.name), _building);
-        return true;
-    }
-    public IEnumerable<BuildingScript> GetAllBuildings()
-    {
-        foreach (var b in buildings)
-            yield return b.Value;
-    }
-    public BuildingScript GetBuilding(string id)
-    {
-        if (!buildings.ContainsKey(Hash(id)))
-            return null;
-        return buildings[Hash(id)];
     }
     public static void GetAllBuilding()
     {

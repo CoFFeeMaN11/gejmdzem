@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Tower", menuName = "Buildings/Tower", order = 1)]
-class TowerScript : BuildingScript
-{ 
+
+class TowerScript : MonoBehaviour
+{
+    TileCoords coords;
     [SerializeField]
     private int damage;
     [SerializeField]
@@ -21,20 +22,10 @@ class TowerScript : BuildingScript
     public GameObject Arrow;
     public GameObject BuildPanel;
 
-    public UpgradeType[] upgrades;
 
-    // Use this for initialization
     void Start ()
     {
-        GameManagerScript.Get.RegisterBuildings(this);
         shootingTimeStamp = Time.time;
-        upgrades = new UpgradeType[3];
-
-        for(int i=0; i<upgrades.Length; i++)
-        {
-            Debug.Log(i);
-            upgrades[i] = UpgradeType.empty;
-        }
 	}
 	
 	// Update is called once per frame
@@ -67,13 +58,4 @@ class TowerScript : BuildingScript
         }
     }
 
-    void OnMouseDown()
-    {
-        BuildPanel.SetActive( !BuildPanel.activeInHierarchy );
-    }
-
-    public override void OnUse()
-    {
-        throw new NotImplementedException();
-    }
 }

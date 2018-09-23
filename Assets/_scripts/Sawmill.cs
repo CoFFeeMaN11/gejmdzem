@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Sawmill", menuName = "Buildings/Sawmill", order = 1)]
-public class Sawmill : BuildingScript
+
+public class Sawmill : MonoBehaviour
 {
     public int ResourceQuantity;
     public float TimeInterval;
@@ -15,7 +15,6 @@ public class Sawmill : BuildingScript
 	// Use this for initialization
 	void Start ()
     {
-        GameManagerScript.Get.RegisterBuildings(this);
         resourceTimeStamp = Time.time;
 	}
 	
@@ -29,7 +28,7 @@ public class Sawmill : BuildingScript
         }
 	}
     
-    public override void OnUse()
+    public void OnUse()
     {
         throw new NotImplementedException();
     }

@@ -13,11 +13,6 @@ public class BuildingMenu : MonoBehaviour {
     public void Show(TileCoords _coords)
     {
         coords = _coords;
-        foreach(var b in GameManagerScript.Get.GetAllBuildings())
-        {
-            var temp = Instantiate(item) as BuildingItem;
-            temp.transform.parent = context.transform;
-        }
         animator.SetBool("open", true);
     }
 
